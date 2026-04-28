@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gobierno de Datos Regulatorios - Finandina & TÓTAL REPORT®</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        fin: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 500: '#3b82f6', 600: '#2563eb', 800: '#1e40af', 900: '#1e3a8a' }, // Azul Finandina
+                        tr: { 50: '#faf5ff', 100: '#f3e8ff', 200: '#e9d5ff', 500: '#a855f7', 600: '#9333ea', 800: '#6b21a8', 900: '#581c87' },  // Morado TOTAL REPORT
+                        proc: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 600: '#059669', 900: '#064e3b' }, // Verde Procesamiento
+                        evid: { 50: '#fffbeb', 100: '#fef3c7', 200: '#fde68a', 600: '#d97706', 900: '#78350f' }, // Ámbar Evidencia
+                        sec: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 600: '#475569', 900: '#0f172a' },  // Gris Seguridad
+                        ext: { 50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 600: '#dc2626', 900: '#7f1d1d' },  // Rojo Entes
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .badge { 
+            display: inline-flex; 
+            align-items: center; 
+            padding: 0.125rem 0.625rem; 
+            border-radius: 9999px; 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+        }
+        .badge-fin { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+        .badge-tr { background-color: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+        .badge-shared { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+        .badge-ext { background-color: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+        /* Medidas de seguridad visual */
+        .secure-content {
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+            -webkit-user-drag: none; /* Safari */
+        }
+        
+        /* Bloqueo de interacción sobre los SVGs generados por Mermaid */
+        .mermaid svg {
+            pointer-events: none !important;
+        }
+
+        /* Diagram Wrappers */
+        .diagram-container {
+            position: relative;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        .mermaid-viewport {
+            overflow: auto;
+            border: 1px dashed #cbd5e1;
+            border-radius: 0.5rem;
+            background: #f8fafc;
+            max-height: 650px;
+            position: relative;
+        }
+
+        .mermaid-scale-wrapper {
+            transform-origin: top left;
+            transition: transform 0.2s ease-out;
+            padding: 1.5rem;
+            min-width: 100%;
+            display: inline-block;
+        }
+
+        .mermaid { display: flex; justify-content: center; }
+        section { scroll-margin-top: 5rem; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex h-screen overflow-hidden secure-content">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden fixed top-0 w-full bg-white border-b border-slate-200 z-50 flex items-center justify-between px-4 py-3 shadow-sm">
+        <div class="font-bold text-fin-900 text-lg flex items-center gap-2">
+            <i data-lucide="shield-check" class="w-6 h-6 text-tr-600"></i>
+            TÓTAL REPORT®
+        </div>
+        <button id="mobile-menu-btn" class="text-slate-500 hover:text-slate-700 focus:outline-none">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-72 bg-white border-r border-slate-200 h-full flex-shrink-0 flex flex-col transition-transform transform -translate-x-full md:translate-x-0 fixed md:static z-40 shadow-lg md:shadow-none">
+        <div class="h-16 flex items-center px-6 border-b border-slate-200 font-bold text-fin-900 text-lg md:flex hidden">
+            <i data-lucide="shield-check" class="w-6 h-6 mr-3 text-tr-600"></i>
+            TÓTAL REPORT®
+        </div>
+        
+        <div class="p-4 text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border-b border-slate-100">
+            Banco Finandina
+        </div>
+
+        <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto text-sm font-medium">
+            <a href="#contexto" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="book-open" class="w-4 h-4 mr-3 text-slate-400"></i> Contexto y Objetivos</a>
+            <a href="#principios" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="compass" class="w-4 h-4 mr-3 text-slate-400"></i> Principios de Diseño</a>
+            <a href="#leyenda" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="palette" class="w-4 h-4 mr-3 text-slate-400"></i> Leyenda Visual</a>
+            <a href="#modelo" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="network" class="w-4 h-4 mr-3 text-slate-400"></i> Modelo Conceptual</a>
+            <a href="#despliegue" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="cloud" class="w-4 h-4 mr-3 text-tr-500"></i> Arquitectura de Despliegue</a>
+            <a href="#medallon" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="layers" class="w-4 h-4 mr-3 text-proc-600"></i> Metodología Medallón</a>
+            <a href="#flujo" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="git-branch" class="w-4 h-4 mr-3 text-slate-400"></i> Flujo de Datos Regulatorio</a>
+            <a href="#secuencia" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="arrow-right-left" class="w-4 h-4 mr-3 text-slate-400"></i> Secuencia Operativa</a>
+            <a href="#gobierno" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="gavel" class="w-4 h-4 mr-3 text-slate-400"></i> Gobierno Regulatorio</a>
+            <a href="#linaje" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="git-commit" class="w-4 h-4 mr-3 text-evid-600"></i> Linaje y Evidencia</a>
+            <a href="#artefactos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="boxes" class="w-4 h-4 mr-3 text-slate-400"></i> Artefactos Cliente vs Producto</a>
+            <a href="#finandina-vs-tr" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="split-square-horizontal" class="w-4 h-4 mr-3 text-slate-400"></i> Finandina vs TÓTAL REPORT®</a>
+            <a href="#seguridad" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="shield" class="w-4 h-4 mr-3 text-sec-600"></i> Seguridad y Ambientes</a>
+            <a href="#validaciones" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="check-square" class="w-4 h-4 mr-3 text-slate-400"></i> Validaciones</a>
+            <a href="#muric" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="briefcase" class="w-4 h-4 mr-3 text-slate-400"></i> Consideraciones MURIC</a>
+            <a href="#raci" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="users" class="w-4 h-4 mr-3 text-slate-400"></i> Matriz RACI</a>
+            <a href="#insumos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="list-checks" class="w-4 h-4 mr-3 text-slate-400"></i> Insumos Requeridos</a>
+            <a href="#supuestos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="alert-circle" class="w-4 h-4 mr-3 text-slate-400"></i> Supuestos y Restricciones</a>
+            <a href="#riesgos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="alert-triangle" class="w-4 h-4 mr-3 text-ext-600"></i> Riesgos y Mitigaciones</a>
+            <a href="#criterios" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="award" class="w-4 h-4 mr-3 text-slate-400"></i> Criterios de Éxito</a>
+            <a href="#dimensionamiento" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="maximize" class="w-4 h-4 mr-3 text-slate-400"></i> Dimensionamiento Fase 1</a>
+            <a href="#componentes" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="server" class="w-4 h-4 mr-3 text-slate-400"></i> Componentes AWS</a>
+            <a href="#proximos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="calendar" class="w-4 h-4 mr-3 text-slate-400"></i> Próximos Pasos</a>
+            <a href="#correo" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="mail" class="w-4 h-4 mr-3 text-slate-400"></i> Correo a Finandina</a>
+            <a href="#glosario" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="book" class="w-4 h-4 mr-3 text-slate-400"></i> Glosario</a>
+            <a href="#conclusion" class="flex items-center px-3 py-2 text-tr-700 bg-tr-50 rounded-lg hover:bg-tr-100 transition-colors mt-2"><i data-lucide="shield-check" class="w-4 h-4 mr-3 text-tr-600"></i> Conclusión Ejecutiva</a>
+        </nav>
+        
+        <div class="p-4 border-t border-slate-200 bg-slate-50 text-xs text-slate-500">
+            Arquitectura de Soluciones<br>
+            <strong class="text-slate-700">TÓTAL REPORT®</strong>
+        </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-30 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto h-full pt-16 md:pt-0 scroll-smooth pb-24 bg-slate-50 relative">
+        
+        <!-- Hero Banner -->
+        <div class="bg-gradient-to-r from-fin-900 to-tr-900 text-white px-8 py-20 text-center relative overflow-hidden shadow-md">
+            <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMiIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+Cjwvc3ZnPg==')]"></div>
+            <div class="relative z-10 max-w-4xl mx-auto pointer-events-auto">
+                <span class="inline-block py-1 px-3 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-semibold tracking-wider mb-4 border border-white/30">
+                    PROPUESTA DE ARQUITECTURA CLOUD
+                </span>
+                <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight tracking-tight">Gobierno de Datos Regulatorios</h1>
+                <p class="text-blue-100 text-lg md:text-xl font-light">
+                    Modelo Conceptual, Arquitectura de Integración y Despliegue<br class="hidden md:block"/> 
+                    <strong>Banco Finandina & TÓTAL REPORT®</strong>
+                </p>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
+
+            <!-- 1. Contexto -->
+            <section id="contexto" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-fin-100 text-fin-600 rounded-xl"><i data-lucide="info" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">1. Contexto Funcional y Objetivos</h2>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm leading-relaxed text-slate-600 space-y-6 text-lg relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-fin-50 rounded-bl-full -mr-16 -mt-16 opacity-50"></div>
+                    
+                    <p class="relative z-10">
+                        La solución <strong>no debe presentarse como una segunda bodega corporativa de datos</strong>. El enfoque estratégico acordado establece que:
+                    </p>
+                    
+                    <div class="p-6 bg-slate-50 border-l-4 border-fin-500 rounded-r-xl italic font-medium text-slate-700 shadow-inner relative z-10">
+                        "TÓTAL REPORT® se integra como una capa regulatoria especializada dentro del ecosistema tecnológico de Finandina. La información fuente permanece en los repositorios corporativos del Banco."
+                    </div>
+                    
+                    <p class="relative z-10">
+                        Los datos pasan por una arquitectura de procesamiento basada en <strong>metodología medallón</strong> (Landing/Raw, Bronze, Silver, Gold Regulatoria y Evidencia) antes de ser consumidos. Finandina conserva la propiedad y custodia de sus datos, infraestructura y evidencias. <strong>TÓTAL REPORT® aporta el conocimiento normativo</strong> a través de reglas, cálculos, validaciones, estructuras, formatos, analítica y transmisión.
+                    </p>
+                </div>
+            </section>
+
+            <!-- 2. Principios -->
+            <section id="principios" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-600 rounded-xl"><i data-lucide="compass" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">2. Principios de Diseño</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-fin-100 text-fin-600 rounded-xl flex items-center justify-center mb-5"><i data-lucide="database" class="w-6 h-6"></i></div>
+                        <h3 class="font-bold text-slate-800 mb-3 text-lg">No duplicidad corporativa</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Se evita crear repositorios paralelos. Se habilita una capa regulatoria especializada (Medallón) estrictamente para consumo normativo.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-sec-100 text-sec-600 rounded-xl flex items-center justify-center mb-5"><i data-lucide="lock" class="w-6 h-6"></i></div>
+                        <h3 class="font-bold text-slate-800 mb-3 text-lg">Custodia y Propiedad</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Toda la infraestructura cloud, datos crudos, resultados y evidencias normativas residen y son propiedad exclusiva de Finandina.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-tr-100 text-tr-600 rounded-xl flex items-center justify-center mb-5"><i data-lucide="split" class="w-6 h-6"></i></div>
+                        <h3 class="font-bold text-slate-800 mb-3 text-lg">Separación de Responsabilidades</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Finandina maneja la extracción técnica (Cliente); TÓTAL REPORT® provee el motor, validaciones y mantenimiento normativo (Producto).</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-proc-100 text-proc-600 rounded-xl flex items-center justify-center mb-5"><i data-lucide="filter" class="w-6 h-6"></i></div>
+                        <h3 class="font-bold text-slate-800 mb-3 text-lg">Deduplicación y Consistencia</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Eliminación de redundancias desde la integración (Capa Silver) para garantizar un registro único (Golden Record) y evitar inconsistencias multi-formato.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-evid-100 text-evid-600 rounded-xl flex items-center justify-center mb-5"><i data-lucide="search" class="w-6 h-6"></i></div>
+                        <h3 class="font-bold text-slate-800 mb-3 text-lg">Trazabilidad y Auditabilidad</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Se conserva el linaje completo del dato: desde la fuente y extracción, hasta el cálculo, transmisión al ente de control y acuse de recibo.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center mb-5"><i data-lucide="layers" class="w-6 h-6"></i></div>
+                        <h3 class="font-bold text-slate-800 mb-3 text-lg">Escalabilidad Progresiva</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Implementación progresiva y modular por dimensiones priorizadas (ej. Riesgo, MURIC), evitando implementaciones inmanejables tipo "Big Bang".</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Leyenda Visual -->
+            <section id="leyenda" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-600 rounded-xl"><i data-lucide="palette" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">3. Leyenda Visual de la Arquitectura</h2>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-fin-500 mb-2 shadow"></div>
+                        <span class="text-xs font-bold text-slate-700">Azul</span>
+                        <span class="text-xs text-slate-500 mt-1">Finandina / Datos Corporativos</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-tr-600 mb-2 shadow"></div>
+                        <span class="text-xs font-bold text-slate-700">Morado</span>
+                        <span class="text-xs text-slate-500 mt-1">TÓTAL REPORT® / Motor</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-proc-600 mb-2 shadow"></div>
+                        <span class="text-xs font-bold text-slate-700">Verde</span>
+                        <span class="text-xs text-slate-500 mt-1">Procesamiento / Calidad</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-evid-600 mb-2 shadow"></div>
+                        <span class="text-xs font-bold text-slate-700">Ámbar</span>
+                        <span class="text-xs text-slate-500 mt-1">Evidencia / Auditoría</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-sec-600 mb-2 shadow"></div>
+                        <span class="text-xs font-bold text-slate-700">Gris</span>
+                        <span class="text-xs text-slate-500 mt-1">Seguridad / Gobierno</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-ext-600 mb-2 shadow"></div>
+                        <span class="text-xs font-bold text-slate-700">Rojo</span>
+                        <span class="text-xs text-slate-500 mt-1">Entes Externos / Riesgos</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Modelo Conceptual -->
+            <section id="modelo" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-fin-100 text-fin-600 rounded-xl"><i data-lucide="network" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">4. Modelo Conceptual de Integración</h2>
+                </div>
+                
+                <!-- Diagram Wrapper -->
+                <div class="diagram-container group">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4 pointer-events-auto">
+                        <div>
+                            <h3 class="font-bold text-slate-800">Diagrama Lógico de Alto Nivel</h3>
+                            <p class="text-sm text-slate-500">Muestra la separación de responsabilidades y flujo conceptual de la información.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 opacity-100 transition-opacity">
+                            <div class="bg-slate-100 p-1 rounded flex gap-1 items-center">
+                                <button class="p-1 hover:bg-white rounded text-slate-600 tooltip" title="Alejar" onclick="handleZoom(this, -0.25)"><i data-lucide="zoom-out" class="w-4 h-4"></i></button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 0.75)">75%</button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600 font-bold" onclick="handleZoom(this, 0, 1)">100%</button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 1.25)">125%</button>
+                                <button class="p-1 hover:bg-white rounded text-slate-600 tooltip" title="Acercar" onclick="handleZoom(this, 0.25)"><i data-lucide="zoom-in" class="w-4 h-4"></i></button>
+                            </div>
+                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
+                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Mermaid
+                            </button>
+                            <span class="text-emerald-600 text-sm font-medium self-center hidden copy-success">¡Copiado!</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mermaid-viewport">
+                        <div class="mermaid-scale-wrapper">
+                            <div class="mermaid" data-source="flowchart LR
+    classDef db fill:#bfdbfe,stroke:#1e40af,stroke-width:2px,color:#0f172a
+    classDef process fill:#d1fae5,stroke:#047857,stroke-width:2px,color:#0f172a
+    classDef tr fill:#e9d5ff,stroke:#7e22ce,stroke-width:2px,color:#0f172a
+    classDef output fill:#fee2e2,stroke:#b91c1c,stroke-width:2px,color:#0f172a
+    classDef evid fill:#fef3c7,stroke:#b45309,stroke-width:2px,color:#0f172a
+
+    A[Fuentes Finandina<br/>Core, Riesgo, etc.]:::db --> B[(Bodega / Lakehouse / DWH)]:::db
+    B --> C[Extracción Personalizada<br/>Artefacto Cliente]:::process
+    C --> D[Data Lake Regulatorio<br/>Metodología Medallón]:::process
+    
+    D --> E{Motor TÓTAL REPORT®<br/>Artefacto Producto}:::tr
+    
+    E --> F[Reglas & Cálculos]:::tr
+    E --> G[Analítica & Calidad]:::tr
+    
+    F --> H[Transmisión API/SFTP]:::output
+    G --> H
+    
+    H --> I[Entes de Control<br/>SFC, DIAN, Otros]:::output
+    H --> J[(Repositorio de Evidencia<br/>Acuses, Logs, Validaciones)]:::evid
+    
+    K[Actualización Normativa<br/>TÓTAL REPORT®]:::tr -.-> E">
+                                flowchart LR
+                                    classDef db fill:#bfdbfe,stroke:#1e40af,stroke-width:2px,color:#0f172a
+                                    classDef process fill:#d1fae5,stroke:#047857,stroke-width:2px,color:#0f172a
+                                    classDef tr fill:#e9d5ff,stroke:#7e22ce,stroke-width:2px,color:#0f172a
+                                    classDef output fill:#fee2e2,stroke:#b91c1c,stroke-width:2px,color:#0f172a
+                                    classDef evid fill:#fef3c7,stroke:#b45309,stroke-width:2px,color:#0f172a
+
+                                    A[Fuentes Finandina<br/>Core, Riesgo, etc.]:::db --> B[(Bodega / Lakehouse / DWH)]:::db
+                                    B --> C[Extracción Personalizada<br/>Artefacto Cliente]:::process
+                                    C --> D[Data Lake Regulatorio<br/>Metodología Medallón]:::process
+                                    
+                                    D --> E{Motor TÓTAL REPORT®<br/>Artefacto Producto}:::tr
+                                    
+                                    E --> F[Reglas & Cálculos]:::tr
+                                    E --> G[Analítica & Calidad]:::tr
+                                    
+                                    F --> H[Transmisión API/SFTP]:::output
+                                    G --> H
+                                    
+                                    H --> I[Entes de Control<br/>SFC, DIAN, Otros]:::output
+                                    H --> J[(Repositorio de Evidencia<br/>Acuses, Logs, Validaciones)]:::evid
+                                    
+                                    K[Actualización Normativa<br/>TÓTAL REPORT®]:::tr -.-> E
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Arquitectura de Despliegue AWS -->
+            <section id="despliegue" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-tr-100 text-tr-600 rounded-xl"><i data-lucide="cloud" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">5. Arquitectura de Despliegue AWS (C4)</h2>
+                </div>
+                
+                <p class="text-slate-600 mb-6 text-lg">
+                    Despliegue estructurado bajo el modelo <strong>C4 (Deployment View)</strong>, segmentado por subredes privadas, aislando capas de exposición, procesamiento, datos y aplicación dentro de la VPC de Finandina. Se lee de izquierda a derecha.
+                </p>
+
+                <!-- Diagram Wrapper -->
+                <div class="diagram-container group">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4 pointer-events-auto">
+                        <div>
+                            <h3 class="font-bold text-slate-800">Vista Arquitectónica de Alto Nivel</h3>
+                            <p class="text-sm text-slate-500">Mapeo conceptual de zonas, responsabilidades y componentes principales.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 opacity-100 transition-opacity">
+                            <div class="bg-slate-100 p-1 rounded flex gap-1 items-center">
+                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, -0.25)"><i data-lucide="zoom-out" class="w-4 h-4"></i></button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 0.75)">75%</button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600 font-bold" onclick="handleZoom(this, 0, 1)">100%</button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 1.25)">125%</button>
+                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, 0.25)"><i data-lucide="zoom-in" class="w-4 h-4"></i></button>
+                            </div>
+                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
+                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Mermaid
+                            </button>
+                            <span class="text-emerald-600 text-sm font-medium self-center hidden copy-success">¡Copiado!</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mermaid-viewport">
+                        <div class="mermaid-scale-wrapper">
+                            <div class="mermaid" data-source="flowchart LR
+    classDef cloud fill:#f8fafc,stroke:#334155,stroke-width:1.4px,color:#0f172a,stroke-dasharray: 5 5;
+    classDef zone fill:#ffffff,stroke:#cbd5e1,stroke-width:1.1px,color:#0f172a;
+    classDef external fill:#fef2f2,stroke:#dc2626,stroke-width:1.2px,color:#7f1d1d;
+    classDef user fill:#f8fafc,stroke:#475569,stroke-width:1.2px,color:#0f172a;
+    classDef proc fill:#ecfdf5,stroke:#059669,stroke-width:1.2px,color:#064e3b;
+    classDef lake fill:#eff6ff,stroke:#2563eb,stroke-width:1.2px,color:#1e3a8a;
+    classDef tr fill:#faf5ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
+    classDef sec fill:#f1f5f9,stroke:#64748b,stroke-width:1.1px,color:#334155;
+
+    USERS[&#34;👥 Usuarios<br/>Finandina&#34;]:::user
+
+    subgraph FINANDINA[&#34;🏢 Red Finandina&#34;]
+        direction TB
+        DWH[(&#34;Bodega Corporativa<br/>(DWH / Fuentes)&#34;)]:::lake
+    end
+
+    subgraph AWS[&#34;☁️ VPC AWS (Finandina)&#34;]
+        direction LR
+
+        subgraph CAPA_PROC[&#34;⚙️ Capa de Extracción y Calidad&#34;]
+            ETL{{&#34;Procesamiento ETL<br/>(Artefactos Cliente)&#34;}}:::proc
+        end
+
+        subgraph CAPA_DATA[&#34;📁 Capa de Datos&#34;]
+            S3[(&#34;Data Lake Regulatorio<br/>(Medallón & Evidencia)&#34;)]:::lake
+        end
+
+        subgraph CAPA_APP[&#34;🚀 Capa de Aplicación&#34;]
+            TR{{&#34;Motor TÓTAL REPORT®<br/>(Reglas, Analítica y TX)&#34;}}:::tr
+        end
+
+        subgraph CAPA_SEC[&#34;🛡️ Controles Transversales&#34;]
+            SEC[&#34;Seguridad, Identidad, Red<br/>y Monitoreo (IAM, WAF, KMS)&#34;]:::sec
+        end
+
+        CAPA_PROC --&gt;|Ingesta progresiva| S3
+        S3 --&gt;|Lectura Gold| TR
+        TR --&gt;|Escritura Evidencias| S3
+        
+        CAPA_SEC ~~~ CAPA_PROC
+        CAPA_SEC ~~~ CAPA_APP
+    end
+
+    subgraph EXT[&#34;🏛️ Entes Control&#34;]
+        direction TB
+        SFC[&#34;SFC, DIAN y Otros&#34;]:::external
+    end
+
+    USERS --&gt;|Acceso Web / API| TR
+    DWH --&gt;|Datos Fuente| CAPA_PROC
+    TR --&gt;|Transmisión oficial| EXT
+
+    class AWS cloud;
+    class FINANDINA,CAPA_PROC,CAPA_DATA,CAPA_APP,CAPA_SEC zone;">
+                                flowchart LR
+                                    classDef cloud fill:#f8fafc,stroke:#334155,stroke-width:1.4px,color:#0f172a,stroke-dasharray: 5 5;
+                                    classDef zone fill:#ffffff,stroke:#cbd5e1,stroke-width:1.1px,color:#0f172a;
+                                    classDef external fill:#fef2f2,stroke:#dc2626,stroke-width:1.2px,color:#7f1d1d;
+                                    classDef user fill:#f8fafc,stroke:#475569,stroke-width:1.2px,color:#0f172a;
+                                    classDef proc fill:#ecfdf5,stroke:#059669,stroke-width:1.2px,color:#064e3b;
+                                    classDef lake fill:#eff6ff,stroke:#2563eb,stroke-width:1.2px,color:#1e3a8a;
+                                    classDef tr fill:#faf5ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
+                                    classDef sec fill:#f1f5f9,stroke:#64748b,stroke-width:1.1px,color:#334155;
+
+                                    USERS["👥 Usuarios<br/>Finandina"]:::user
+
+                                    subgraph FINANDINA["🏢 Red Finandina"]
+                                        direction TB
+                                        DWH[("Bodega Corporativa<br/>(DWH / Fuentes)")]:::lake
+                                    end
+
+                                    subgraph AWS["☁️ VPC AWS (Finandina)"]
+                                        direction LR
+
+                                        subgraph CAPA_PROC["⚙️ Capa de Extracción y Calidad"]
+                                            ETL{{"Procesamiento ETL<br/>(Artefactos Cliente)"}}:::proc
+                                        end
+
+                                        subgraph CAPA_DATA["📁 Capa de Datos"]
+                                            S3[("Data Lake Regulatorio<br/>(Medallón & Evidencia)")]:::lake
+                                        end
+
+                                        subgraph CAPA_APP["🚀 Capa de Aplicación"]
+                                            TR{{"Motor TÓTAL REPORT®<br/>(Reglas, Analítica y TX)"}}:::tr
+                                        end
+
+                                        subgraph CAPA_SEC["🛡️ Controles Transversales"]
+                                            SEC["Seguridad, Identidad, Red<br/>y Monitoreo (IAM, WAF, KMS)"]:::sec
+                                        end
+
+                                        CAPA_PROC -->|Ingesta progresiva| S3
+                                        S3 -->|Lectura Gold| TR
+                                        TR -->|Escritura Evidencias| S3
+                                        
+                                        CAPA_SEC ~~~ CAPA_PROC
+                                        CAPA_SEC ~~~ CAPA_APP
+                                    end
+
+                                    subgraph EXT["🏛️ Entes Control"]
+                                        direction TB
+                                        SFC["SFC, DIAN y Otros"]:::external
+                                    end
+
+                                    USERS -->|Acceso Web / API| TR
+                                    DWH -->|Datos Fuente| CAPA_PROC
+                                    TR -->|Transmisión oficial| EXT
+
+                                    class AWS cloud;
+                                    class FINANDINA,CAPA_PROC,CAPA_DATA,CAPA_APP,CAPA_SEC zone;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. Metodología Medallón -->
+            <section id="medallon" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-proc-50 text-proc-600 rounded-xl"><i data-lucide="layers" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">6. Metodología Medallón Regulatoria</h2>
+                </div>
+                
+                <p class="text-slate-600 mb-6">Aislamiento progresivo de datos para garantizar inmutabilidad, trazabilidad y calidad antes de la validación normativa.</p>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 uppercase tracking-wider text-xs">
+                                <tr>
+                                    <th class="px-6 py-4">Capa</th>
+                                    <th class="px-6 py-4">Propósito</th>
+                                    <th class="px-6 py-4">Qué contiene</th>
+                                    <th class="px-6 py-4">Responsable</th>
+                                    <th class="px-6 py-4">Evidencia / Salida Esperada</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-bold text-slate-700 whitespace-nowrap"><div class="w-3 h-3 rounded-full bg-slate-400 inline-block mr-2"></div> Landing / Raw</td>
+                                    <td class="px-6 py-4 text-slate-600">Recepción controlada sin transformación.</td>
+                                    <td class="px-6 py-4 text-slate-600">Datos extraídos desde DWH / Lakehouse tal como llegan.</td>
+                                    <td class="px-6 py-4"><span class="badge badge-fin">Finandina / Integración</span></td>
+                                    <td class="px-6 py-4 text-slate-600">Archivo fuente, fecha extracción, lote, hash si aplica.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-bold text-amber-700 whitespace-nowrap"><div class="w-3 h-3 rounded-full bg-amber-600 inline-block mr-2"></div> Bronze</td>
+                                    <td class="px-6 py-4 text-slate-600">Normalización técnica base.</td>
+                                    <td class="px-6 py-4 text-slate-600">Tipos de dato, estructuras base, nombres estandarizados, formatos de fecha.</td>
+                                    <td class="px-6 py-4"><span class="badge badge-fin">Finandina / Compartido</span></td>
+                                    <td class="px-6 py-4 text-slate-600">Dataset normalizado, logs de normalización.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-bold text-slate-500 whitespace-nowrap"><div class="w-3 h-3 rounded-full bg-slate-300 inline-block mr-2"></div> Silver</td>
+                                    <td class="px-6 py-4 text-slate-600">Depuración, homologación, calidad y cruces.</td>
+                                    <td class="px-6 py-4 text-slate-600">Datos limpios, homologados, enriquecidos y validados técnicamente.</td>
+                                    <td class="px-6 py-4"><span class="badge badge-shared">Compartido</span></td>
+                                    <td class="px-6 py-4 text-slate-600">Reporte de calidad, errores, reglas técnicas aplicadas.</td>
+                                </tr>
+                                <tr class="hover:bg-amber-50 bg-amber-50/30">
+                                    <td class="px-6 py-4 font-bold text-amber-600 whitespace-nowrap"><div class="w-3 h-3 rounded-full bg-yellow-400 inline-block mr-2"></div> Gold Regulatoria</td>
+                                    <td class="px-6 py-4 text-slate-800">Datos listos para reglas, validación y cálculo regulatorio.</td>
+                                    <td class="px-6 py-4 font-medium text-slate-800">Modelo regulatorio preparado por formato, dimensión o corte.</td>
+                                    <td class="px-6 py-4"><span class="badge badge-shared">Compartido / TÓTAL REPORT®</span></td>
+                                    <td class="px-6 py-4 text-slate-800 font-medium">Insumo regulatorio versionado, corte aprobado.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-bold text-evid-900 whitespace-nowrap"><div class="w-3 h-3 rounded-full bg-evid-600 inline-block mr-2"></div> Evidencia Regulatoria</td>
+                                    <td class="px-6 py-4 text-slate-600">Soporte histórico inmutable.</td>
+                                    <td class="px-6 py-4 text-slate-600">Archivos transmitidos, acuses, logs, rechazos, resultados, trazabilidad.</td>
+                                    <td class="px-6 py-4"><span class="badge badge-fin">Finandina</span></td>
+                                    <td class="px-6 py-4 text-slate-600">Expediente regulatorio por reporte/corte.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 border-t-2 border-slate-100">
+                                    <td class="px-6 py-4 font-bold text-proc-900 whitespace-nowrap"><i data-lucide="book-open" class="inline w-4 h-4 mr-1"></i> Catálogo Técnico</td>
+                                    <td class="px-6 py-4 text-slate-600">Metadata, linaje técnico y gobierno de datos. (Glue Data Catalog)</td>
+                                    <td class="px-6 py-4 text-slate-600">Datasets, campos, reglas, propietarios, fechas, versiones.</td>
+                                    <td class="px-6 py-4"><span class="badge badge-fin">Finandina / Compartido</span></td>
+                                    <td class="px-6 py-4 text-slate-600">Catálogo actualizado y consultable.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. Flujo de Datos Regulatorio -->
+            <section id="flujo" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-200 text-slate-700 rounded-xl"><i data-lucide="git-branch" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">7. Flujo de Datos Regulatorio</h2>
+                </div>
+                
+                <!-- Diagram Wrapper -->
+                <div class="diagram-container group">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4 pointer-events-auto">
+                        <div>
+                            <h3 class="font-bold text-slate-800">Pipeline de Procesamiento de Datos</h3>
+                            <p class="text-sm text-slate-500">Recorrido del dato desde la fuente hasta la transmisión y evidencia.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 opacity-100 transition-opacity">
+                            <div class="bg-slate-100 p-1 rounded flex gap-1 items-center">
+                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, -0.25)"><i data-lucide="zoom-out" class="w-4 h-4"></i></button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 0.75)">75%</button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600 font-bold" onclick="handleZoom(this, 0, 1)">100%</button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 1.25)">125%</button>
+                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, 0.25)"><i data-lucide="zoom-in" class="w-4 h-4"></i></button>
+                            </div>
+                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
+                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Mermaid
+                            </button>
+                            <span class="text-emerald-600 text-sm font-medium self-center hidden copy-success">¡Copiado!</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mermaid-viewport">
+                        <div class="mermaid-scale-wrapper">
+                            <div class="mermaid" data-source="flowchart LR
+    classDef fin fill:#eff6ff,stroke:#3b82f6,stroke-width:1.5px,color:#1e3a8a
+    classDef proc fill:#ecfdf5,stroke:#059669,stroke-width:1.5px,color:#064e3b
+    classDef tr fill:#faf5ff,stroke:#9333ea,stroke-width:2px,color:#581c87
+    classDef ext fill:#fef2f2,stroke:#dc2626,stroke-width:1.5px,color:#7f1d1d
+    classDef evid fill:#fffbeb,stroke:#d97706,stroke-width:1.5px,color:#78350f
+
+    A[Fuentes corporativas]:::fin --> B[DWH / Lakehouse]:::fin
+    B --> C[Extracción autorizada]:::proc
+    C --> D[Landing / Raw]:::proc
+    D --> E[Bronze]:::proc
+    E --> F[Silver]:::proc
+    F --> G[Gold Regulatoria]:::proc
+    
+    G --> H{Motor TÓTAL REPORT®}:::tr
+    H --> I[Reglas y cálculos]:::tr
+    H --> J[Analítica]:::tr
+    I --> K[Generación]:::tr
+    
+    K --> L[Transmisión]:::tr
+    L --> M[Entes de Control]:::ext
+    L --> N[(Evidencia Histórica)]:::evid
+    
+    M -.-> O[Retroalimentación<br/>Acuse / Rechazo]:::ext
+    O -.-> N">
+                                flowchart LR
+                                    classDef fin fill:#eff6ff,stroke:#3b82f6,stroke-width:1.5px,color:#1e3a8a
+                                    classDef proc fill:#ecfdf5,stroke:#059669,stroke-width:1.5px,color:#064e3b
+                                    classDef tr fill:#faf5ff,stroke:#9333ea,stroke-width:2px,color:#581c87
+                                    classDef ext fill:#fef2f2,stroke:#dc2626,stroke-width:1.5px,color:#7f1d1d
+                                    classDef evid fill:#fffbeb,stroke:#d97706,stroke-width:1.5px,color:#78350f
+
+                                    A[Fuentes corporativas]:::fin --> B[DWH / Lakehouse]:::fin
+                                    B --> C[Extracción autorizada]:::proc
+                                    C --> D[Landing / Raw]:::proc
+                                    D --> E[Bronze]:::proc
+                                    E --> F[Silver]:::proc
+                                    F --> G[Gold Regulatoria]:::proc
+                                    
+                                    G --> H{Motor TÓTAL REPORT®}:::tr
+                                    H --> I[Reglas y cálculos]:::tr
+                                    H --> J[Analítica]:::tr
+                                    I --> K[Generación]:::tr
+                                    
+                                    K --> L[Transmisión]:::tr
+                                    L --> M[Entes de Control]:::ext
+                                    L --> N[(Evidencia Histórica)]:::evid
+                                    
+                                    M -.-> O[Retroalimentación<br/>Acuse / Rechazo]:::ext
+                                    O -.-> N
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. Secuencia Operativa -->
+            <section id="secuencia" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-200 text-slate-700 rounded-xl"><i data-lucide="arrow-right-left" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">8. Secuencia Operativa</h2>
+                </div>
+                
+                <!-- Diagram Wrapper -->
+                <div class="diagram-container group">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4 pointer-events-auto">
+                        <div>
+                            <h3 class="font-bold text-slate-800">Diagrama de Secuencia Transaccional</h3>
+                            <p class="text-sm text-slate-500">Interacción entre sistemas y manejo de escenarios (Alt/Else).</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 opacity-100 transition-opacity">
+                            <div class="bg-slate-100 p-1 rounded flex gap-1 items-center">
+                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, -0.25)"><i data-lucide="zoom-out" class="w-4 h-4"></i></button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 0.75)">75%</button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600 font-bold" onclick="handleZoom(this, 0, 1)">100%</button>
+                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 1.25)">125%</button>
+                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, 0.25)"><i data-lucide="zoom-in" class="w-4 h-4"></i></button>
+                            </div>
+                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
+                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Mermaid
+                            </button>
+                            <span class="text-emerald-600 text-sm font-medium self-center hidden copy-success">¡Copiado!</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mermaid-viewport">
+                        <div class="mermaid-scale-wrapper">
+                            <div class="mermaid" data-source="sequenceDiagram
+    autonumber
+    box rgb(248, 250, 252) &#34;Dominio Banco Finandina&#34;
+        participant B as DWH / Fuentes
+        participant E as Integración (ETL)
+        participant C as Lake Regulatorio
+        participant H as S3 Evidencia
+    end
+    box rgb(243, 232, 255) &#34;Dominio TÓTAL REPORT®&#34;
+        participant T as Motor Regulatorio
+        participant R as Validaciones & Cálculos
+    end
+    box rgb(254, 242, 242) &#34;Entidades Externas&#34;
+        participant S as SFC / DIAN
+    end
+
+    B->>E: Extracción programada o a demanda
+    E->>C: Paso por Raw -> Bronze -> Silver
+    C->>T: Ingesta de datos Gold Regulatoria
+    T->>R: Aplicación de reglas, mallas y cálculos normativos
+    alt Inconsistencias Regulatorias
+        R-->>T: Errores de validación de negocio
+        T->>H: Log de errores
+        T-->>E: Solicitud de Reproceso
+    else Datos Válidos
+        R-->>T: Resultado válido
+        T->>S: Construcción payload y Transmisión (API/SFTP)
+        alt Transmisión Exitosa
+            S-->>T: Acuse de recibo / Confirmación
+            T->>H: Almacenamiento de trazabilidad y expediente
+        else Rechazo del Ente
+            S-->>T: Rechazo técnico/negocio
+            T->>H: Registro de rechazo y alertas
+        end
+    end">
+                                sequenceDiagram
+                                    autonumber
+                                    box rgb(248, 250, 252) "Dominio Banco Finandina"
+                                        participant B as DWH / Fuentes
+                                        participant E as Integración (ETL)
+                                        participant C as Lake Regulatorio
+                                        participant H as S3 Evidencia
+                                    end
+                                    box rgb(243, 232, 255) "Dominio TÓTAL REPORT®"
+                                        participant T as Motor Regulatorio
+                                        participant R as Validaciones & Cálculos
+                                    end
+                                    box rgb(254, 242, 242) "Entidades Externas"
+                                        participant S as SFC / DIAN
+                                    end
+
+                                    B->>E: Extracción programada o a demanda
+                                    E->>C: Paso por Raw -> Bronze -> Silver
+                                    C->>T: Ingesta de datos Gold Regulatoria
+                                    T->>R: Aplicación de reglas, mallas y cálculos normativos
+                                    alt Inconsistencias Regulatorias
+                                        R-->>T: Errores de validación de negocio
+                                        T->>H: Log de errores
+                                        T-->>E: Solicitud de Reproceso
+                                    else Datos Válidos
+                                        R-->>T: Resultado válido
+                                        T->>S: Construcción payload y Transmisión (API/SFTP)
+                                        alt Transmisión Exitosa
+                                            S-->>T: Acuse de recibo / Confirmación
+                                            T->>H: Almacenamiento de trazabilidad y expediente
+                                        else Rechazo del Ente
+                                            S-->>T: Rechazo técnico/negocio
+                                            T->>H: Registro de rechazo y alertas
+                                        end
+                                    end
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. Gobierno de Datos -->
+            <section id="gobierno" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="gavel" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">9. Gobierno de Datos Regulatorio</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden col-span-1 lg:col-span-3">
+                        <div class="bg-slate-50 px-4 py-3 border-b border-slate-200 font-bold text-slate-700 flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4"></i> Elementos de Gobierno</div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-slate-100 text-slate-600 border-b border-slate-200">
+                                    <tr>
+                                        <th class="px-4 py-2">Elemento de gobierno</th>
+                                        <th class="px-4 py-2">Descripción</th>
+                                        <th class="px-4 py-2">Evidencia / Artefacto</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr><td class="px-4 py-3 font-semibold text-slate-700">Dueño de dato</td><td class="px-4 py-3 text-slate-600">Responsable de origen y veracidad en sistemas core.</td><td class="px-4 py-3 font-mono text-xs text-slate-500">Catálogo de Datos / Glue</td></tr>
+                                    <tr><td class="px-4 py-3 font-semibold text-slate-700">Dueño funcional</td><td class="px-4 py-3 text-slate-600">Área responsable del formato ante el ente de control.</td><td class="px-4 py-3 font-mono text-xs text-slate-500">Matriz RACI / Manual Interno</td></tr>
+                                    <tr><td class="px-4 py-3 font-semibold text-slate-700">Regla técnica</td><td class="px-4 py-3 text-slate-600">Validaciones de obligatoriedad, tipos de datos y nulos.</td><td class="px-4 py-3 font-mono text-xs text-slate-500">Diccionario Capa Silver</td></tr>
+                                    <tr><td class="px-4 py-3 font-semibold text-slate-700">Regla regulatoria</td><td class="px-4 py-3 text-slate-600">Lógicas de negocio, cálculos y cruces normativos exigidos.</td><td class="px-4 py-3 font-mono text-xs text-slate-500">Repositorio Motor TÓTAL REPORT®</td></tr>
+                                    <tr><td class="px-4 py-3 font-semibold text-slate-700">Matriz fuente-dato-regla</td><td class="px-4 py-3 text-slate-600">Mapeo oficial desde la fuente hasta el campo del formato final.</td><td class="px-4 py-3 font-mono text-xs text-slate-500">Documento de Mapeo (Excel/Wiki)</td></tr>
+                                    <tr><td class="px-4 py-3 font-semibold text-slate-700">Linaje</td><td class="px-4 py-3 text-slate-600">Trazabilidad del flujo del dato por todas las capas.</td><td class="px-4 py-3 font-mono text-xs text-slate-500">Logs CloudTrail / Step Functions</td></tr>
+                                    <tr><td class="px-4 py-3 font-semibold text-slate-700">Calidad</td><td class="px-4 py-3 text-slate-600">Reporte de completitud y consistencia previo a cálculos.</td><td class="px-4 py-3 font-mono text-xs text-slate-500">Reporte DQ (Data Quality)</td></tr>
+                                    <tr><td class="px-4 py-3 font-semibold text-slate-700">Evidencia</td><td class="px-4 py-3 text-slate-600">Soporte inmutable de lo generado y transmitido.</td><td class="px-4 py-3 font-mono text-xs text-slate-500">S3 Evidencia Histórica</td></tr>
+                                    <tr><td class="px-4 py-3 font-semibold text-slate-700">Comité funcional-regulatorio</td><td class="px-4 py-3 text-slate-600">Instancia para resolver ambigüedades y bloqueos.</td><td class="px-4 py-3 font-mono text-xs text-slate-500">Actas de Comité</td></tr>
+                                    <tr><td class="px-4 py-3 font-semibold text-slate-700">Priorización por criticidad</td><td class="px-4 py-3 text-slate-600">Orden de implementación basado en riesgo de sanción u operativo.</td><td class="px-4 py-3 font-mono text-xs text-slate-500">Backlog Priorizado</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden col-span-1 lg:col-span-3 mt-4">
+                        <div class="bg-slate-50 px-4 py-3 border-b border-slate-200 font-bold text-slate-700 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Dimensiones Regulatorias y Criticidad</div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-slate-100 text-slate-600 border-b border-slate-200">
+                                    <tr>
+                                        <th class="px-4 py-2">Dimensión</th>
+                                        <th class="px-4 py-2">Ejemplos de Procesos</th>
+                                        <th class="px-4 py-2">Criticidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr><td class="px-4 py-3 font-medium text-slate-700">Riesgo</td><td class="px-4 py-3 text-slate-600">Circular 003, Grandes Exposiciones, Formatos 450 y 458</td><td class="px-4 py-3"><span class="badge bg-red-100 text-red-800">Alta</span></td></tr>
+                                    <tr><td class="px-4 py-3 font-medium text-slate-700">Cartera</td><td class="px-4 py-3 text-slate-600">MURIC</td><td class="px-4 py-3"><span class="badge bg-red-100 text-red-800">Alta</span></td></tr>
+                                    <tr><td class="px-4 py-3 font-medium text-slate-700">Tributario</td><td class="px-4 py-3 text-slate-600">DIAN / Medios Magnéticos</td><td class="px-4 py-3"><span class="badge bg-orange-100 text-orange-800">Media-Alta</span></td></tr>
+                                    <tr><td class="px-4 py-3 font-medium text-slate-700">Contabilidad</td><td class="px-4 py-3 text-slate-600">Formatos contables regulatorios SFC</td><td class="px-4 py-3"><span class="badge bg-orange-100 text-orange-800">Media-Alta</span></td></tr>
+                                    <tr><td class="px-4 py-3 font-medium text-slate-700">Liquidez</td><td class="px-4 py-3 text-slate-600">Riesgo de liquidez</td><td class="px-4 py-3"><span class="badge bg-slate-100 text-slate-800">Por validar</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. Linaje y Evidencia -->
+            <section id="linaje" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-evid-50 text-evid-600 rounded-xl"><i data-lucide="git-commit" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">10. Linaje, Evidencia y Trazabilidad</h2>
+                </div>
+
+                <p class="text-slate-600 mb-6">El modelo asegura el seguimiento explícito de parámetros clave en cada etapa:</p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="badge bg-slate-200 text-slate-700">Versión normativa</span>
+                    <span class="badge bg-slate-200 text-slate-700">Versión Motor TÓTAL REPORT®</span>
+                    <span class="badge bg-slate-200 text-slate-700">Hash/Checksum de archivo</span>
+                    <span class="badge bg-slate-200 text-slate-700">Corte reportado</span>
+                    <span class="badge bg-slate-200 text-slate-700">Usuario ejecutor</span>
+                    <span class="badge bg-slate-200 text-slate-700">Timestamp</span>
+                    <span class="badge bg-slate-200 text-slate-700">Estado final del proceso</span>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-800 text-white border-b border-slate-700 uppercase tracking-wider text-xs">
+                                <tr>
+                                    <th class="px-5 py-4">Fase del Linaje</th>
+                                    <th class="px-5 py-4">Información Trazada</th>
+                                    <th class="px-5 py-4">Soporte Generado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-5 py-3 font-semibold text-slate-700">1. Fuente</td>
+                                    <td class="px-5 py-3 text-slate-600">Sistema origen, tabla, campo, fecha de extracción.</td>
+                                    <td class="px-5 py-3 text-slate-500 font-mono text-xs">Log ETL (Glue/StepFunctions)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-5 py-3 font-semibold text-slate-700">2. Transformación</td>
+                                    <td class="px-5 py-3 text-slate-600">Script ejecutado, versión del mapeo, regla aplicada.</td>
+                                    <td class="px-5 py-3 text-slate-500 font-mono text-xs">Artefactos de código en Git</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-5 py-3 font-semibold text-slate-700">3. Calidad</td>
+                                    <td class="px-5 py-3 text-slate-600">Resultado de validación técnica (nulos, formatos).</td>
+                                    <td class="px-5 py-3 text-slate-500 font-mono text-xs">Reporte DQ (Data Quality)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-5 py-3 font-semibold text-tr-700">4. Regulatorio</td>
+                                    <td class="px-5 py-3 text-slate-600">Regla normativa, cálculo aplicado, error o aceptación.</td>
+                                    <td class="px-5 py-3 text-slate-500 font-mono text-xs">Log Motor TÓTAL REPORT®</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-5 py-3 font-semibold text-tr-700">5. Transmisión</td>
+                                    <td class="px-5 py-3 text-slate-600">Archivo, hash, fecha, canal.</td>
+                                    <td class="px-5 py-3 text-slate-500 font-mono text-xs">Payload / Archivo plano (S3)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-5 py-3 font-semibold text-evid-700">6. Respuesta</td>
+                                    <td class="px-5 py-3 text-slate-600">Acuse del ente, estado de aceptación o rechazo, confirmación.</td>
+                                    <td class="px-5 py-3 text-slate-500 font-mono text-xs">Acuse oficial / XML (S3)</td>
+                                </tr>
+                                <tr class="bg-slate-50 border-t-2 border-slate-200">
+                                    <td class="px-5 py-3 font-semibold text-slate-800">7. Auditoría Global</td>
+                                    <td class="px-5 py-3 text-slate-600">Usuario ejecutor, ejecución, logs, trazabilidad global.</td>
+                                    <td class="px-5 py-3 text-slate-500 font-mono text-xs">CloudTrail / APP DB</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 11. Separación de Artefactos -->
+            <section id="artefactos" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="boxes" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">11. Artefactos Cliente vs. Producto</h2>
+                </div>
+                
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-600 border-b border-slate-200">
+                                <tr>
+                                    <th class="px-4 py-3">Tipo de Artefacto</th>
+                                    <th class="px-4 py-3">Ejemplos</th>
+                                    <th class="px-4 py-3">Propiedad / Custodia</th>
+                                    <th class="px-4 py-3">Uso</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-semibold text-fin-700">Artefactos Cliente</td>
+                                    <td class="px-4 py-3 text-slate-600">Scripts de extracción, mapeos, homologaciones, diccionarios, vistas, jobs específicos.</td>
+                                    <td class="px-4 py-3"><span class="badge badge-fin">Finandina</span></td>
+                                    <td class="px-4 py-3 text-slate-600">Preparación de datos crudos hacia modelo Gold.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-semibold text-slate-600">Artefactos Compartidos</td>
+                                    <td class="px-4 py-3 text-slate-600">Reglas de calidad técnica, pruebas integrales (UAT), matriz fuente-dato-regla.</td>
+                                    <td class="px-4 py-3"><span class="badge badge-shared">Compartida</span></td>
+                                    <td class="px-4 py-3 text-slate-600">Aseguramiento de gobierno de datos y pruebas.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-semibold text-tr-700">Artefactos Producto</td>
+                                    <td class="px-4 py-3 text-slate-600">Reglas regulatorias, cálculos, formatos, estructuras, motor normativo, actualización.</td>
+                                    <td class="px-4 py-3"><span class="badge badge-tr">TÓTAL REPORT®</span></td>
+                                    <td class="px-4 py-3 text-slate-600">Procesamiento normativo "core" del producto.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-semibold text-evid-700">Evidencias Regulatorias</td>
+                                    <td class="px-4 py-3 text-slate-600">Archivos transmitidos, acuses, logs, errores, resultados, trazabilidad.</td>
+                                    <td class="px-4 py-3"><span class="badge badge-fin">Finandina (Custodia)</span></td>
+                                    <td class="px-4 py-3 text-slate-600">Soporte frente a auditorías y requerimientos.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. Finandina vs TÓTAL REPORT® -->
+            <section id="finandina-vs-tr" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="split-square-horizontal" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">12. Qué queda en Finandina vs Qué queda en TÓTAL REPORT®</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-800 text-white border-b border-slate-700">
+                                <tr>
+                                    <th class="px-4 py-3">Elemento</th>
+                                    <th class="px-4 py-3 text-center">Finandina</th>
+                                    <th class="px-4 py-3 text-center">TÓTAL REPORT®</th>
+                                    <th class="px-4 py-3">Comentario</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Datos fuente</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-fin-500 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Propiedad exclusiva del banco.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Bodega corporativa</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-fin-500 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Mantenida en la arquitectura actual del banco.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Infraestructura AWS</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-fin-500 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Despliegue en la VPC de Finandina.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Scripts de extracción cliente</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-fin-500 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Custodiados en repositorios del banco.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Mapeos y homologaciones</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-fin-500 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-slate-400 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Construidos y mantenidos conjuntamente, custodiados por el banco.</td>
+                                </tr>
+                                <tr class="bg-tr-50/30 hover:bg-tr-50/60">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Reglas regulatorias estándar</td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-tr-600 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Insumo nativo del producto.</td>
+                                </tr>
+                                <tr class="bg-tr-50/30 hover:bg-tr-50/60">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Cálculos regulatorios</td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-tr-600 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Insumo nativo del producto.</td>
+                                </tr>
+                                <tr class="bg-tr-50/30 hover:bg-tr-50/60">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Formatos oficiales</td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-tr-600 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Insumo nativo del producto.</td>
+                                </tr>
+                                <tr class="bg-tr-50/30 hover:bg-tr-50/60">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Motor regulatorio</td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-tr-600 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Instancia de software licenciada.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Evidencia transmitida</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-fin-500 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Custodia en S3 de Finandina.</td>
+                                </tr>
+                                <tr class="bg-tr-50/30 hover:bg-tr-50/60">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Actualización normativa</td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-tr-600 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Servicio continuo del producto.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Operación diaria</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-fin-500 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Ejecución a cargo del usuario banco.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Soporte y mantenimiento</td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-tr-600 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">SLA de soporte de producto.</td>
+                                </tr>
+                                <tr class="bg-tr-50/30 hover:bg-tr-50/60">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Analítica regulatoria</td>
+                                    <td class="px-4 py-3 text-center text-slate-300">-</td>
+                                    <td class="px-4 py-3 text-center"><i data-lucide="check-circle" class="w-5 h-5 text-tr-600 mx-auto"></i></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Funcionalidad nativa para visualizar KPIs.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 13. Seguridad y Ambientes -->
+            <section id="seguridad" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-sec-100 text-sec-600 rounded-xl"><i data-lucide="shield" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">13. Seguridad, Operación y Ambientes</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Controles de Seguridad -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-1">
+                        <h3 class="font-bold text-slate-800 mb-4 border-b pb-2 flex items-center gap-2"><i data-lucide="lock" class="w-4 h-4"></i> Controles Mínimos</h3>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">IAM (Mínimo privilegio)</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">TLS en tránsito</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">KMS en reposo</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Secrets Manager</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Segmentación subredes</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">WAF</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Logs de acceso</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">CloudTrail</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Control usuarios/roles</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Integración SSO</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Retención de logs</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Gestión certificados</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Auditoría ejecución</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Separación funciones</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Gestión cambios</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Versionamiento</span>
+                            <span class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs font-mono font-medium">Anonimización (DEV)</span>
+                        </div>
+                    </div>
+
+                    <!-- Ambientes -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden lg:col-span-2">
+                        <div class="bg-slate-50 px-4 py-3 border-b border-slate-200 font-bold text-slate-700 flex items-center gap-2"><i data-lucide="server" class="w-4 h-4"></i> Estrategia de Ambientes</div>
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-100 text-slate-600 border-b border-slate-200">
+                                <tr>
+                                    <th class="px-4 py-3">Ambiente</th>
+                                    <th class="px-4 py-3">Propósito</th>
+                                    <th class="px-4 py-3">Datos Permitidos</th>
+                                    <th class="px-4 py-3">Controles Mínimos</th>
+                                    <th class="px-4 py-3">Evidencia Esperada</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-slate-700">Desarrollo (DEV)</td>
+                                    <td class="px-4 py-3 text-slate-600">Configuración técnica, ajustes de mapping y pruebas unitarias.</td>
+                                    <td class="px-4 py-3 text-slate-600">Sintéticos / Anonimizados</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">VPC aislada, sin acceso a PRD</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Scripts en Git, pruebas exitosas.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-slate-700">Certificación (QA/UAT)</td>
+                                    <td class="px-4 py-3 text-slate-600">Validación funcional, pruebas regulatorias cruzadas.</td>
+                                    <td class="px-4 py-3 text-slate-600">Copia de PRD controlada / Obscurecidos</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Accesos restringidos, trazabilidad.</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Actas de UAT, acuses de prueba.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-bold text-fin-700">Producción (PRD)</td>
+                                    <td class="px-4 py-3 text-slate-800 font-medium">Operación regulatoria oficial con datos reales.</td>
+                                    <td class="px-4 py-3 text-slate-800 font-medium">Reales (Datos Sensibles)</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Todos los controles (IAM, KMS, WAF).</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Expedientes oficiales transmitidos.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-slate-700">Continuidad (DR)</td>
+                                    <td class="px-4 py-3 text-slate-600">Recuperación ante desastres (RPO/RTO).</td>
+                                    <td class="px-4 py-3 text-slate-600">Reales (Replicados)</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Espejo de PRD.</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Pruebas periódicas de DR.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 14. Validaciones -->
+            <section id="validaciones" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="check-square" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">14. Tipología de Validaciones</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                    <!-- Técnicas -->
+                    <div class="bg-white p-8 border-b md:border-b-0 md:border-r border-slate-200">
+                        <div class="flex items-center gap-3 mb-5">
+                            <i data-lucide="database" class="w-6 h-6 text-slate-400"></i>
+                            <h3 class="font-bold text-xl text-slate-800">Validaciones Técnicas</h3>
+                        </div>
+                        <p class="text-sm text-slate-500 mb-4 italic">Ejecutadas en capa de integración (Bronze/Silver)</p>
+                        <ul class="space-y-3 text-slate-600">
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> Tipo de dato.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> Obligatoriedad.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> Formato.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> Longitud.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> Duplicidad.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> Consistencia referencial.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> Fechas.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> Catálogos.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> Nulos.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"></i> Codificaciones.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Regulatorias -->
+                    <div class="bg-tr-50/30 p-8">
+                        <div class="flex items-center gap-3 mb-5">
+                            <i data-lucide="scale" class="w-6 h-6 text-tr-500"></i>
+                            <h3 class="font-bold text-xl text-tr-900">Validaciones Regulatorias</h3>
+                        </div>
+                        <p class="text-sm text-tr-600/80 mb-4 italic">Ejecutadas por TÓTAL REPORT® (Gold)</p>
+                        <ul class="space-y-3 text-slate-700">
+                            <li class="flex items-start gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-tr-500 shrink-0 mt-0.5"></i> Reglas de negocio normativas explícitas.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-tr-500 shrink-0 mt-0.5"></i> Cálculos.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-tr-500 shrink-0 mt-0.5"></i> Límites.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-tr-500 shrink-0 mt-0.5"></i> Saldos.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-tr-500 shrink-0 mt-0.5"></i> Clasificaciones.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-tr-500 shrink-0 mt-0.5"></i> Estructuras del formato (ej. anidamientos XML).</li>
+                            <li class="flex items-start gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-tr-500 shrink-0 mt-0.5"></i> Consistencia entre campos.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-tr-500 shrink-0 mt-0.5"></i> Cumplimiento de instructivos.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="shield-check" class="w-5 h-5 text-tr-500 shrink-0 mt-0.5"></i> Reglas propias de SFC / DIAN / otros.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15. Consideraciones MURIC -->
+            <section id="muric" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="briefcase" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">15. Consideraciones Especiales: MURIC</h2>
+                </div>
+                
+                <div class="bg-white border-l-4 border-fin-500 p-6 rounded-r-2xl shadow-sm mb-6 space-y-3">
+                    <p class="text-slate-700 font-medium">MURIC no se abordará inicialmente como una "generación completa desde cero" si Finandina ya posee avances internos (ej. lógicas propias). El enfoque será incremental.</p>
+                    <p class="text-sm text-slate-600 italic">Para cartera, se recomienda separar la base histórica de análisis del insumo de transmisión del corte, evitando retransmitir históricos completos cuando solo aplican registros nuevos o modificados.</p>
+                    <p class="text-sm text-slate-600 italic">Para terceros, el primer cargue puede conformar el maestro completo; en cortes posteriores se deben actualizar terceros nuevos o modificados asociados a obligaciones del período.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-600 border-b border-slate-200">
+                                <tr>
+                                    <th class="px-4 py-3">Frente MURIC</th>
+                                    <th class="px-4 py-3">Enfoque Propuesto</th>
+                                    <th class="px-4 py-3">Consideraciones Técnicas</th>
+                                    <th class="px-4 py-3">Evidencia Esperada</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-slate-700">Maestro de Terceros</td>
+                                    <td class="px-4 py-3 text-slate-600">Validación y carga incremental (nuevos/modificados).</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Identificar llaves únicas y cruzar contra cortes anteriores.</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Log de terceros actualizados y validados.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-slate-700">Obligaciones (Cartera)</td>
+                                    <td class="px-4 py-3 text-slate-600">Separación histórico vs. transmisión del corte.</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Gestión de novedades; reglas de completitud obligatorias.</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Reporte de obligaciones procesadas y consistencia.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-slate-700">Generación y Transmisión</td>
+                                    <td class="px-4 py-3 text-slate-600">Integración con capa regulatoria para formato AVRO y API.</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Adaptación estricta al esquema AVRO y envío vía API SFC.</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Payloads AVRO, acuses API y registro de éxito/fallo.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-slate-700">Calidad y Analítica</td>
+                                    <td class="px-4 py-3 text-slate-600">Analítica complementaria y calidad de datos pre-envío.</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Consistencia cruzada entre maestro y obligaciones.</td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Tableros de hallazgos MURIC.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 16. Matriz RACI -->
+            <section id="raci" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="users" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">16. Matriz RACI (Responsabilidades)</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-800 text-white">
+                                <tr>
+                                    <th class="px-4 py-3">Componente / Actividad</th>
+                                    <th class="px-4 py-3 text-center">TÓTAL REPORT®</th>
+                                    <th class="px-4 py-3 text-center">Finandina</th>
+                                    <th class="px-4 py-3 text-center">Terceros / Infraestructura</th>
+                                    <th class="px-4 py-3">Evidencia Esperada</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Definición de dimensiones regulatorias</td><td class="px-4 py-3 text-center font-bold text-tr-600">R/C</td><td class="px-4 py-3 text-center font-bold text-fin-600">A/R</td><td class="px-4 py-3 text-center text-slate-400">I</td><td class="px-4 py-3 text-xs text-slate-500">Matriz de dimensiones priorizada</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Priorización de formatos</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600">A/R</td><td class="px-4 py-3 text-center text-slate-400">I</td><td class="px-4 py-3 text-xs text-slate-500">Backlog de formatos por fase</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Inventario de formatos de riesgo</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600">A/R</td><td class="px-4 py-3 text-center text-slate-400">I</td><td class="px-4 py-3 text-xs text-slate-500">Listado consolidado</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Diseño conceptual de arquitectura</td><td class="px-4 py-3 text-center font-bold text-tr-600 bg-tr-50">R</td><td class="px-4 py-3 text-center font-bold text-fin-600">A/C</td><td class="px-4 py-3 text-center text-slate-500">C</td><td class="px-4 py-3 text-xs text-slate-500">Diagrama lógico aprobado</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Diseño de arquitectura de despliegue</td><td class="px-4 py-3 text-center font-bold text-tr-600 bg-tr-50">R</td><td class="px-4 py-3 text-center font-bold text-fin-600">A/C</td><td class="px-4 py-3 text-center text-slate-500">C</td><td class="px-4 py-3 text-xs text-slate-500">Diagrama C4 AWS aprobado</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Definición de fuentes de datos</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600">A/R</td><td class="px-4 py-3 text-center text-slate-500">C</td><td class="px-4 py-3 text-xs text-slate-500">Matriz Fuente-Dato</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Extracción desde fuentes Finandina</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600 bg-fin-50">A/R</td><td class="px-4 py-3 text-center text-slate-500">R</td><td class="px-4 py-3 text-xs text-slate-500">Jobs ETL ejecutados en S3</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Código de transformación cliente</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600 bg-fin-50">A/R</td><td class="px-4 py-3 text-center text-slate-500">R</td><td class="px-4 py-3 text-xs text-slate-500">Scripts / Repositorio Git</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Reglas de calidad técnica</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600 bg-fin-50">A/R</td><td class="px-4 py-3 text-center text-slate-500">C</td><td class="px-4 py-3 text-xs text-slate-500">Reporte DQ Silver</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Validaciones regulatorias</td><td class="px-4 py-3 text-center font-bold text-tr-600 bg-tr-50">A/R</td><td class="px-4 py-3 text-center font-bold text-fin-600">C</td><td class="px-4 py-3 text-center text-slate-400">I</td><td class="px-4 py-3 text-xs text-slate-500">Logs de error/éxito</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Cálculos regulatorios</td><td class="px-4 py-3 text-center font-bold text-tr-600 bg-tr-50">A/R</td><td class="px-4 py-3 text-center font-bold text-fin-600">C</td><td class="px-4 py-3 text-center text-slate-400">I</td><td class="px-4 py-3 text-xs text-slate-500">Resultados en Gold</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Analítica regulatoria</td><td class="px-4 py-3 text-center font-bold text-tr-600 bg-tr-50">A/R</td><td class="px-4 py-3 text-center font-bold text-fin-600">C/R</td><td class="px-4 py-3 text-center text-slate-400">I</td><td class="px-4 py-3 text-xs text-slate-500">Dashboards disponibles</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Transmisión regulatoria</td><td class="px-4 py-3 text-center font-bold text-tr-600 bg-tr-50">R</td><td class="px-4 py-3 text-center font-bold text-fin-600">A/C</td><td class="px-4 py-3 text-center text-slate-500">C</td><td class="px-4 py-3 text-xs text-slate-500">Payload enviado</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Custodia de evidencia</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600 bg-fin-50">A/R</td><td class="px-4 py-3 text-center text-slate-500">C</td><td class="px-4 py-3 text-xs text-slate-500">Archivos en S3</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Infraestructura AWS</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600 bg-fin-50">A/R</td><td class="px-4 py-3 text-center text-slate-500">R</td><td class="px-4 py-3 text-xs text-slate-500">VPC y componentes provistos</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Seguridad, accesos y secretos</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600 bg-fin-50">A/R</td><td class="px-4 py-3 text-center text-slate-500">C</td><td class="px-4 py-3 text-xs text-slate-500">Roles IAM, Llaves KMS</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Monitoreo y observabilidad</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600 bg-fin-50">A/R</td><td class="px-4 py-3 text-center text-slate-500">C</td><td class="px-4 py-3 text-xs text-slate-500">Dashboards CloudWatch</td></tr>
+                                <tr class="hover:bg-slate-50 border-t-2 border-slate-300"><td class="px-4 py-3 font-medium text-slate-800">Actualización normativa producto</td><td class="px-4 py-3 text-center font-bold text-tr-600 bg-tr-50">A/R</td><td class="px-4 py-3 text-center font-bold text-fin-600">I/C</td><td class="px-4 py-3 text-center text-slate-400">I</td><td class="px-4 py-3 text-xs text-slate-500">Releases y Notas</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Soporte y mantenimiento</td><td class="px-4 py-3 text-center font-bold text-tr-600 bg-tr-50">A/R</td><td class="px-4 py-3 text-center font-bold text-fin-600">C</td><td class="px-4 py-3 text-center text-slate-400">I</td><td class="px-4 py-3 text-xs text-slate-500">Tickets cerrados SLA</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Pruebas funcionales y regulatorias</td><td class="px-4 py-3 text-center font-bold text-tr-600">C/R</td><td class="px-4 py-3 text-center font-bold text-fin-600 bg-fin-50">A/R</td><td class="px-4 py-3 text-center text-slate-400">I</td><td class="px-4 py-3 text-xs text-slate-500">Actas de certificación (QA)</td></tr>
+                                <tr class="hover:bg-slate-50"><td class="px-4 py-3 font-medium text-slate-800">Gestión de cambios</td><td class="px-4 py-3 text-center font-bold text-tr-600">C</td><td class="px-4 py-3 text-center font-bold text-fin-600 bg-fin-50">A/R</td><td class="px-4 py-3 text-center text-slate-400">C</td><td class="px-4 py-3 text-xs text-slate-500">Aprobación pasos a PRD</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-slate-50 p-4 text-sm text-slate-600 border-t border-slate-200 flex flex-wrap gap-x-6 gap-y-2 font-mono">
+                        <span><strong>R</strong> = Responsible (Ejecutor)</span>
+                        <span><strong>A</strong> = Accountable (Aprobador final)</span>
+                        <span><strong>C</strong> = Consulted (Consultado)</span>
+                        <span><strong>I</strong> = Informed (Informado)</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 17. Insumos Requeridos -->
+            <section id="insumos" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="list-checks" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">17. Insumos Requeridos</h2>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2 border-b pb-2"><i data-lucide="briefcase" class="w-5 h-5 text-fin-500"></i> Funcionales</h3>
+                        <ul class="text-sm text-slate-600 space-y-3 flex-1">
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Inventario de reportes regulatorios de riesgo.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Priorización de formatos críticos.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Dolores operativos por formato.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Periodicidad.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Volumen aproximado de registros.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Responsables funcionales asignados.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Estado actual de automatización.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Reportes actuales vs requeridos.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2 border-b pb-2"><i data-lucide="server" class="w-5 h-5 text-proc-500"></i> Técnicos</h3>
+                        <ul class="text-sm text-slate-600 space-y-3 flex-1">
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Arquitectura actual de datos.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> DWH / Lakehouse disponible.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Fuentes origen por formato.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Modelo de acceso: vistas, APIs, archivos, jobs.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Tecnología objetivo en AWS Finandina.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Restricciones de red y seguridad.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Repositorio histórico de evidencia.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Ambientes disponibles.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Integración SSO e identidad.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Políticas de retención de datos.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2 border-b pb-2"><i data-lucide="scale" class="w-5 h-5 text-tr-500"></i> Regulatorios</h3>
+                        <ul class="text-sm text-slate-600 space-y-3 flex-1">
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Manuales o instructivos internos de Finandina.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Interpretaciones normativas vigentes.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Reglas internas adicionales a la norma.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Casos de error históricos frecuentes.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Requerimientos sobre grupos conectados.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Evidencias requeridas por auditoría.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Canales oficiales de transmisión actuales.</li>
+                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i> Instructivos vigentes SFC / DIAN / otros.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 18. Supuestos y Restricciones -->
+            <section id="supuestos" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="alert-circle" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">18. Supuestos y Restricciones</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Supuestos -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-800 mb-4 border-b pb-2 flex items-center gap-2"><i data-lucide="check" class="w-5 h-5 text-emerald-500"></i> Supuestos Claves</h3>
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Finandina conserva propiedad y custodia de los datos.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> El despliegue se realizará en el ambiente cloud definido por Finandina (AWS).</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Las fuentes estarán disponibles por mecanismos autorizados.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> La extracción y transformación dependerá de insumos técnicos entregados.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> TÓTAL REPORT® provee reglas, validaciones, cálculos, formatos y actualización normativa.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> La transmisión dependerá del canal habilitado por cada ente (SFTP/API).</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> El alcance inicial se limita estrictamente a la dimensión de riesgo.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> MURIC se abordará inicialmente desde validación, analítica, trazabilidad y calidad.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Implementaciones de IA, detección de grupos conectados o analítica avanzada se dimensionarán como alcance específico posterior.</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Restricciones -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-800 mb-4 border-b pb-2 flex items-center gap-2"><i data-lucide="x" class="w-5 h-5 text-red-500"></i> Restricciones</h3>
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Accesos controlados (requerirán gestión de roles y VPC).</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Seguridad corporativa Finandina.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Topología de Red y reglas de Firewalls/WAF.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Latencia en conexión DWH On-Prem vs AWS Cloud.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Volumen masivo de datos (Cartera).</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Ventanas estrictas de procesamiento nocturno.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Política inquebrantable de retención y borrado seguro de datos.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Lineamientos formales AWS de Finandina.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Disponibilidad de ambientes de prueba sincronizados.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Tiempos de los responsables funcionales del Banco.</li>
+                            <li class="flex items-start gap-2"><span class="mt-1">•</span> Tiempos de aprobaciones por Comité de Arquitectura y Seguridad.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 19. Riesgos y Mitigaciones -->
+            <section id="riesgos" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-ext-50 text-ext-600 rounded-xl"><i data-lucide="alert-triangle" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">19. Riesgos y Mitigaciones</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-800 text-white border-b border-slate-700">
+                                <tr>
+                                    <th class="px-4 py-3">Riesgo Identificado</th>
+                                    <th class="px-4 py-3">Impacto</th>
+                                    <th class="px-4 py-3">Estrategia de Mitigación</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Fuentes de datos incompletas.</td>
+                                    <td class="px-4 py-3 text-red-600 font-semibold">Impacto en reporte final.</td>
+                                    <td class="px-4 py-3 text-slate-600">Definición temprana y firma de Matriz Fuente-Dato-Regla.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Mala calidad de datos en origen.</td>
+                                    <td class="px-4 py-3 text-red-600 font-semibold">Rechazo regulatorio.</td>
+                                    <td class="px-4 py-3 text-slate-600">Implementación de validaciones técnicas y regulatorias tempranas (Silver).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Ambigüedad normativa.</td>
+                                    <td class="px-4 py-3 text-amber-600 font-semibold">Cálculos inconsistentes.</td>
+                                    <td class="px-4 py-3 text-slate-600">Establecimiento de mesa funcional-regulatoria para interpretación de norma.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Falta de accesos a red/IAM en AWS.</td>
+                                    <td class="px-4 py-3 text-amber-600 font-semibold">Retraso del cronograma.</td>
+                                    <td class="px-4 py-3 text-slate-600">Gestión temprana de redes, IAM y VPN desde la Fase 0 del proyecto.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Alcance inicial muy amplio (Big Bang).</td>
+                                    <td class="px-4 py-3 text-amber-600 font-semibold">Sobrecostos y fallas.</td>
+                                    <td class="px-4 py-3 text-slate-600">Priorización estricta por fases; Fase 1 enfocada solo en Riesgo.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Dependencia tecnológica del proveedor.</td>
+                                    <td class="px-4 py-3 text-slate-600 font-semibold">Preocupación del cliente.</td>
+                                    <td class="px-4 py-3 text-slate-600">Entrega de artefactos cliente (código extracción) a Finandina como custodia propia.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Falta de evidencia transmitida.</td>
+                                    <td class="px-4 py-3 text-red-600 font-semibold">Riesgo grave de auditoría.</td>
+                                    <td class="px-4 py-3 text-slate-600">Almacenamiento en repositorio histórico trazable (S3) por cada transmisión.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 border-t-2 border-slate-100">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Cambios normativos repentinos (SFC/DIAN).</td>
+                                    <td class="px-4 py-3 text-slate-600 font-semibold">Obsolescencia.</td>
+                                    <td class="px-4 py-3 text-slate-600">Actualización normativa centralizada y continua provista por TÓTAL REPORT®.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 20. Criterios de Éxito -->
+            <section id="criterios" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="award" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">20. Criterios de Éxito</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-600 border-b border-slate-200 uppercase tracking-wider text-xs font-semibold">
+                                <tr>
+                                    <th class="px-4 py-3">Indicador de Éxito</th>
+                                    <th class="px-4 py-3">Descripción</th>
+                                    <th class="px-4 py-3">Evidencia Esperada</th>
+                                    <th class="px-4 py-3 text-center">Meta Inicial</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">% de reglas implementadas</td>
+                                    <td class="px-4 py-3 text-slate-600">Cobertura normativa del motor vs ley.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Reporte de Cobertura</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-emerald-100 text-emerald-800">100% (Base)</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">% de validaciones exitosas</td>
+                                    <td class="px-4 py-3 text-slate-600">Tasa de paso limpio de registros.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Logs TÓTAL REPORT</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-emerald-100 text-emerald-800">&gt; 95%</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Reducción de reprocesos</td>
+                                    <td class="px-4 py-3 text-slate-600">Disminución de rechazos del ente de control.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Histórico de Rechazos</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-emerald-100 text-emerald-800">&gt; 80%</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Tiempo de generación</td>
+                                    <td class="px-4 py-3 text-slate-600">Rapidez en producir archivo final tras ingesta.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Métricas CloudWatch</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-slate-100 text-slate-800">Definir SLA</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Tiempo de transmisión</td>
+                                    <td class="px-4 py-3 text-slate-600">Velocidad de envío al ente.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Métricas Red API</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-slate-100 text-slate-800">En minutos</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Errores detectados antes del envío</td>
+                                    <td class="px-4 py-3 text-slate-600">Filtro de calidad efectivo en capas Bronze/Silver.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Reporte DQ</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-emerald-100 text-emerald-800">100% previo</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Trazabilidad completa por reporte</td>
+                                    <td class="px-4 py-3 text-slate-600">Linaje funcional end-to-end comprobable.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Prueba Auditoría</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-emerald-100 text-emerald-800">Log Completo</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Evidencia y acuses almacenados</td>
+                                    <td class="px-4 py-3 text-slate-600">Custodia física de soportes y recibos.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Bucket S3</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-emerald-100 text-emerald-800">100% de envíos</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Formatos priorizados implementados</td>
+                                    <td class="px-4 py-3 text-slate-600">Pase a producción de la Fase 1.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Acta Go-Live</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-emerald-100 text-emerald-800">100% Backlog</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Fuentes mapeadas vs requeridas</td>
+                                    <td class="px-4 py-3 text-slate-600">Identificación clara de orígenes de datos.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Matriz Final</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-emerald-100 text-emerald-800">1:1</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Ejecución sin intervención manual</td>
+                                    <td class="px-4 py-3 text-slate-600">Automatización del flujo en pipeline regular.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">Logs Step Functions</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-emerald-100 text-emerald-800">Cero clics manuales</span></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Cumplimiento ventana operativa</td>
+                                    <td class="px-4 py-3 text-slate-600">Generación antes de plazos límite nocturnos.</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs font-mono">SLA Diario</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-emerald-100 text-emerald-800">Dentro SLA</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 21. Dimensionamiento Fase 1 -->
+            <section id="dimensionamiento" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="maximize" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">21. Dimensionamiento Fase 1</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Alcance Propuesto -->
+                    <div>
+                        <h3 class="font-bold text-xl text-slate-800 mb-4 border-b pb-2">Alcance Sugerido (Dimensión Riesgo)</h3>
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+                            <div class="flex items-center justify-between border-b pb-2 border-slate-100">
+                                <span class="font-bold text-slate-700 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-fin-500"></i> Grandes Exposiciones / Circular 003</span>
+                                <span class="badge badge-tr">Prioridad 1</span>
+                            </div>
+                            <div class="flex items-center justify-between border-b pb-2 border-slate-100">
+                                <span class="font-bold text-slate-700 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-fin-500"></i> Formato 450</span>
+                                <span class="badge badge-tr">Prioridad 1</span>
+                            </div>
+                            <div class="flex items-center justify-between border-b pb-2 border-slate-100">
+                                <span class="font-bold text-slate-700 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-fin-500"></i> Formato 458</span>
+                                <span class="badge badge-tr">Prioridad 1</span>
+                            </div>
+                            <div class="flex items-center justify-between pt-2">
+                                <div>
+                                    <span class="font-bold text-slate-700 flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4 text-slate-400"></i> MURIC</span>
+                                    <p class="text-xs text-slate-500 mt-1 ml-6">Enfoque inicial: validación, calidad y analítica.</p>
+                                </div>
+                                <span class="badge bg-slate-100 text-slate-600">Fase 1B</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Checklist Dimensionamiento -->
+                    <div class="bg-slate-800 text-white p-6 rounded-2xl shadow-md border border-slate-700">
+                        <h3 class="font-bold text-xl mb-4 text-white flex items-center gap-2 border-b border-slate-700 pb-2"><i data-lucide="list-checks" class="text-fin-400 w-5 h-5"></i> Insumos para Dimensionar Estimación</h3>
+                        <p class="text-slate-300 text-sm mb-6">Para emitir una propuesta técnico-comercial precisa, requerimos validar:</p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-xs text-slate-200 font-mono">
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Cantidad de formatos</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Periodicidad de envío</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Volumen de registros/corte</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Número de fuentes origen</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Complejidad de transformación</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Reglas por formato</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Cantidad de validaciones</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Canales de transmisión</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Ambientes requeridos (DEV, QA, PRD)</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Usuarios administradores</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Acuerdos de Nivel de Servicio (SLA)</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Retención de evidencias (años)</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Integración SSO requerida</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Necesidad de analítica base</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Necesidad de IA / Grupos conectados</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Plazo esperado del proyecto</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Criticidad de transmisión</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Ventanas de procesamiento</span></label>
+                            <label class="flex items-center gap-2"><input type="checkbox" disabled class="rounded bg-slate-700 border-slate-600 focus:ring-0"> <span>Complejidad normativa vigente</span></label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 22. Componentes AWS -->
+            <section id="componentes" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="server" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">22. Componentes AWS Sugeridos</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-800 text-white border-b border-slate-700">
+                                <tr>
+                                    <th class="px-4 py-3">Necesidad</th>
+                                    <th class="px-4 py-3">Servicio AWS Sugerido</th>
+                                    <th class="px-4 py-3">Uso dentro de la Arquitectura</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Acceso seguro y exposición</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">WAF / ALB / API Gateway</td>
+                                    <td class="px-4 py-3 text-slate-600">Punto de entrada para usuarios Finandina hacia el frontend y servicios.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">ETL / procesamiento</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">AWS Glue / Lambda / Step Functions</td>
+                                    <td class="px-4 py-3 text-slate-600">Extracción, validaciones de calidad, orquestación del flujo.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Data Lake (Zonas / Evidencia)</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">Amazon S3 / Lake Formation</td>
+                                    <td class="px-4 py-3 text-slate-600">Almacenamiento inmutable para metodología medallón y expedientes.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Catálogo de metadatos</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">AWS Glue Data Catalog</td>
+                                    <td class="px-4 py-3 text-slate-600">Descubrimiento y gobierno de los datos en las capas S3.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Persistencia aplicativa</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">Amazon RDS / Aurora</td>
+                                    <td class="px-4 py-3 text-slate-600">Base de datos de configuración de TÓTAL REPORT® y auditoría.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Gestión de secretos</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">AWS Secrets Manager</td>
+                                    <td class="px-4 py-3 text-slate-600">Almacenamiento seguro de credenciales (SFTP, API SFC, BD).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Cifrado (Reposo)</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">AWS KMS</td>
+                                    <td class="px-4 py-3 text-slate-600">Llaves administradas para encriptar S3 y bases de datos.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Monitoreo y Alertas</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">Amazon CloudWatch</td>
+                                    <td class="px-4 py-3 text-slate-600">Centralización de logs, métricas de performance y alarmas.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Auditoría de cuenta</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">AWS CloudTrail / AWS Config</td>
+                                    <td class="px-4 py-3 text-slate-600">Trazabilidad de llamadas a APIs AWS y cambios en recursos.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Postura de seguridad</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">AWS Security Hub</td>
+                                    <td class="px-4 py-3 text-slate-600">Visibilidad unificada de alertas y estándares de seguridad.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Retención histórica</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">S3 Lifecycle / S3 Glacier</td>
+                                    <td class="px-4 py-3 text-slate-600">Políticas de transición automática a almacenamiento frío para largo plazo.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Conectividad On-Prem</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">AWS Site-to-Site VPN / Direct Connect</td>
+                                    <td class="px-4 py-3 text-slate-600">Túnel seguro desde el Core Finandina hacia la VPC en AWS.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Colas y Eventos</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">Amazon SQS / EventBridge</td>
+                                    <td class="px-4 py-3 text-slate-600">Desacoplamiento asíncrono para tareas masivas del motor.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Contenedores Backend</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">Amazon ECS Fargate / EKS</td>
+                                    <td class="px-4 py-3 text-slate-600">Cómputo serverless o manejado para el Motor TÓTAL REPORT®.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 font-medium text-slate-700">Frontend / Estáticos</td>
+                                    <td class="px-4 py-3 font-mono text-xs text-fin-600">CloudFront + S3 / ALB</td>
+                                    <td class="px-4 py-3 text-slate-600">Entrega rápida y segura de la consola web TÓTAL SUPERVISIÓN®.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 23. Próximos Pasos -->
+            <section id="proximos" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="calendar" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">23. Próximos Pasos</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-800 text-white border-b border-slate-700">
+                                <tr>
+                                    <th class="px-4 py-3 w-12 text-center">Nº</th>
+                                    <th class="px-4 py-3">Actividad</th>
+                                    <th class="px-4 py-3">Responsable</th>
+                                    <th class="px-4 py-3 text-center">Prioridad</th>
+                                    <th class="px-4 py-3">Resultado Esperado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 text-center text-slate-500 font-mono">1</td>
+                                    <td class="px-4 py-3 font-medium text-slate-700">Consolidar notas técnicas de la sesión inicial.</td>
+                                    <td class="px-4 py-3 text-slate-600">Andrey Ramirez</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-red-100 text-red-800">Alta</span></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Minuta técnica documentada.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 text-center text-slate-500 font-mono">2</td>
+                                    <td class="px-4 py-3 font-medium text-slate-700">Elaborar diagrama conceptual y despliegue AWS.</td>
+                                    <td class="px-4 py-3 text-slate-600">Andrey Ramirez</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-red-100 text-red-800">Alta</span></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Diagramas listos y aprobables.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 bg-blue-50/30">
+                                    <td class="px-4 py-3 text-center text-slate-500 font-mono">3</td>
+                                    <td class="px-4 py-3 font-medium text-slate-700">Construir Matriz RACI preliminar.</td>
+                                    <td class="px-4 py-3 text-slate-600">Andrey Ramirez</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-red-100 text-red-800">Alta</span></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Matriz de responsabilidades clara.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 text-center text-slate-500 font-mono">4</td>
+                                    <td class="px-4 py-3 font-medium text-slate-700">Solicitar inventario de formatos de riesgo.</td>
+                                    <td class="px-4 py-3 text-slate-600">Andrey / Comercial</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-red-100 text-red-800">Alta</span></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Listado priorizado por el Banco.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 text-center text-slate-500 font-mono">5</td>
+                                    <td class="px-4 py-3 font-medium text-slate-700">Solicitar arquitectura actual de datos (DWH/Fuentes).</td>
+                                    <td class="px-4 py-3 text-slate-600">Andrey Ramirez</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-red-100 text-red-800">Alta</span></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Mapa de fuentes Finandina.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 bg-blue-50/30">
+                                    <td class="px-4 py-3 text-center text-slate-500 font-mono">6</td>
+                                    <td class="px-4 py-3 font-medium text-slate-700">Definir alcance formal Fase 1.</td>
+                                    <td class="px-4 py-3 text-slate-600">TÓTAL REPORT®</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-red-100 text-red-800">Alta</span></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Alcance funcional dimensionable.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 text-center text-slate-500 font-mono">7</td>
+                                    <td class="px-4 py-3 font-medium text-slate-700">Preparar documento base de arquitectura.</td>
+                                    <td class="px-4 py-3 text-slate-600">Andrey Ramirez</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-red-100 text-red-800">Alta</span></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Documento final para revisión.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 text-center text-slate-500 font-mono">8</td>
+                                    <td class="px-4 py-3 font-medium text-slate-700">Validar internamente con equipo técnico y comercial.</td>
+                                    <td class="px-4 py-3 text-slate-600">TÓTAL REPORT®</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-red-100 text-red-800">Alta</span></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs">Versión pulida para cliente.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 border-t-2 border-slate-200">
+                                    <td class="px-4 py-3 text-center text-slate-500 font-mono">9</td>
+                                    <td class="px-4 py-3 font-medium text-slate-700">Agendar sesión de validación y presentación con Finandina.</td>
+                                    <td class="px-4 py-3 text-slate-600">Andrey / Comercial</td>
+                                    <td class="px-4 py-3 text-center"><span class="badge bg-red-100 text-red-800">Alta</span></td>
+                                    <td class="px-4 py-3 text-slate-600 text-xs text-fin-700 font-semibold">Aprobación de Arquitectura y Alcance.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 24. Correo a Finandina -->
+            <section id="correo" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="mail" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">24. Borrador de Correo de Solicitud</h2>
+                </div>
+
+                <details class="bg-white rounded-2xl border border-slate-200 shadow-sm group">
+                    <summary class="px-6 py-4 font-bold text-slate-800 cursor-pointer flex justify-between items-center hover:bg-slate-50 transition-colors rounded-2xl group-open:rounded-b-none group-open:border-b border-slate-200">
+                        <span class="flex items-center gap-2"><i data-lucide="send" class="w-5 h-5 text-fin-500"></i> Desplegar Borrador de Correo para Finandina</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="p-6 text-sm text-slate-700 space-y-4 font-mono bg-slate-50 rounded-b-2xl">
+                        <p class="font-bold border-b border-slate-200 pb-2">Asunto: Insumos para modelo conceptual de gobierno de datos regulatorios</p>
+                        <p>Cordial saludo,</p>
+                        <p>De acuerdo con la sesión sostenida entre Finandina y TÓTAL REPORT®, avanzaremos en la estructuración de un modelo conceptual de arquitectura y responsabilidades para el frente de gobierno de datos regulatorios.</p>
+                        <p>El objetivo es dejar claramente definido cómo se integraría TÓTAL REPORT® dentro del ecosistema de datos de Finandina, evitando duplicidades innecesarias y diferenciando adecuadamente:</p>
+                        <ol class="list-decimal pl-6 space-y-1 my-2">
+                            <li>Las fuentes y repositorios corporativos de Finandina.</li>
+                            <li>La capa de extracción, preparación y homologación de datos.</li>
+                            <li>El componente regulatorio de validaciones, cálculos, analítica, transmisión y evidencia.</li>
+                            <li>La custodia de la información transmitida y de los soportes históricos.</li>
+                            <li>Las responsabilidades de Finandina, TÓTAL REPORT® y terceros tecnológicos, si aplica.</li>
+                        </ol>
+                        <p>Para avanzar con una propuesta precisa, agradecemos nos puedan compartir o confirmar los siguientes insumos:</p>
+                        <ul class="list-disc pl-6 space-y-1 my-2">
+                            <li>Inventario de formatos regulatorios asociados a la dimensión de riesgo.</li>
+                            <li>Priorización de los procesos o reportes que hoy generan mayor carga operativa o riesgo.</li>
+                            <li>Identificación de los formatos mencionados en la sesión, incluyendo Formato 450, Formato 458, Circular 003 / Grandes Exposiciones y MURIC.</li>
+                            <li>Arquitectura general de datos disponible para estos procesos.</li>
+                            <li>Repositorio o bodega corporativa desde donde se espera disponibilizar la información.</li>
+                            <li>Fuentes origen requeridas por cada formato.</li>
+                            <li>Reglas internas, validaciones adicionales o interpretaciones regulatorias que Finandina aplique actualmente.</li>
+                            <li>Repositorio donde deberían quedar los archivos transmitidos, acuses, logs y evidencias regulatorias.</li>
+                            <li>Lineamientos técnicos para despliegue o integración en AWS de Finandina.</li>
+                        </ul>
+                        <p>Con estos insumos prepararemos un documento base que incluirá:</p>
+                        <ul class="list-disc pl-6 space-y-1 my-2">
+                            <li>Modelo conceptual de arquitectura.</li>
+                            <li>Flujo de datos regulatorio.</li>
+                            <li>Separación entre personalización del cliente y componentes propios del producto TÓTAL REPORT®.</li>
+                            <li>Matriz preliminar RACI.</li>
+                            <li>Alcance sugerido para una primera fase enfocada en riesgo regulatorio.</li>
+                            <li>Insumos requeridos para dimensionamiento técnico y funcional.</li>
+                        </ul>
+                        <p>Quedamos atentos a la información para avanzar con una versión estructurada que podamos revisar conjuntamente.</p>
+                        <p class="pt-4 border-t border-slate-200 mt-4 text-slate-500">
+                            Cordialmente,<br><br>
+                            <strong>Andrey Ramirez Ospina</strong><br>
+                            Gerencia de Desarrollo y Tecnología<br>
+                            TÓTAL REPORT®
+                        </p>
+                    </div>
+                </details>
+            </section>
+
+            <!-- 25. Glosario -->
+            <section id="glosario" class="scroll-mt-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="book" class="w-6 h-6"></i></div>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">25. Glosario de Términos</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-800 text-sm mb-1">Landing / Raw</span><span class="text-xs text-slate-600">Capa inicial de S3 sin transformación.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-amber-700 text-sm mb-1">Bronze</span><span class="text-xs text-slate-600">Capa S3 de normalización técnica base.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-600 text-sm mb-1">Silver</span><span class="text-xs text-slate-600">Capa S3 depurada y homologada.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-amber-500 text-sm mb-1">Gold Regulatoria</span><span class="text-xs text-slate-600">Capa S3 final lista para consumo normativo.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-evid-700 text-sm mb-1">Evidencia Reg.</span><span class="text-xs text-slate-600">Repositorio inmutable de acuses y archivos.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-fin-200 shadow-sm"><span class="block font-bold text-fin-700 text-sm mb-1">Artefacto Cliente</span><span class="text-xs text-slate-600">Scripts y extracciones a cargo del Banco.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-tr-200 shadow-sm"><span class="block font-bold text-tr-700 text-sm mb-1">Artefacto Producto</span><span class="text-xs text-slate-600">Reglas y motor a cargo de TÓTAL REPORT®.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-800 text-sm mb-1">Motor Regulatorio</span><span class="text-xs text-slate-600">Software aplicativo de cálculos y reglas.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-800 text-sm mb-1">Matriz FDR</span><span class="text-xs text-slate-600">Fuente-Dato-Regla. Diccionario oficial.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-800 text-sm mb-1">Linaje Regulatorio</span><span class="text-xs text-slate-600">Trazabilidad desde la fuente hasta el ente.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-800 text-sm mb-1">DQ (Data Quality)</span><span class="text-xs text-slate-600">Validaciones y reportes de calidad de datos.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-800 text-sm mb-1">RACI</span><span class="text-xs text-slate-600">Matriz de asignación de responsabilidades.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-red-200 shadow-sm"><span class="block font-bold text-red-700 text-sm mb-1">SFC</span><span class="text-xs text-slate-600">Superintendencia Financiera de Colombia.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-red-200 shadow-sm"><span class="block font-bold text-red-700 text-sm mb-1">DIAN</span><span class="text-xs text-slate-600">Dirección de Impuestos y Aduanas.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-800 text-sm mb-1">MURIC</span><span class="text-xs text-slate-600">Mecanismo Único Reporte Info. Crediticia.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-800 text-sm mb-1">AVRO</span><span class="text-xs text-slate-600">Formato de serialización requerido por MURIC.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-800 text-sm mb-1">API / SFTP</span><span class="text-xs text-slate-600">Canales de transmisión de la información.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><span class="block font-bold text-slate-800 text-sm mb-1">DWH</span><span class="text-xs text-slate-600">Data Warehouse Corporativo.</span></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm md:col-span-2 lg:col-span-2"><span class="block font-bold text-slate-800 text-sm mb-1">Lakehouse</span><span class="text-xs text-slate-600">Arquitectura híbrida de repositorio de datos moderno de Finandina.</span></div>
+                </div>
+            </section>
+
+            <!-- 26. Conclusión Ejecutiva -->
+            <section id="conclusion" class="scroll-mt-8 pb-10">
+                <div class="bg-tr-900 rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden text-white pointer-events-auto">
+                    <div class="absolute -right-20 -top-20 opacity-10">
+                        <i data-lucide="award" class="w-96 h-96"></i>
+                    </div>
+                    
+                    <h2 class="text-3xl font-extrabold mb-6 relative z-10 flex items-center gap-3">
+                        <i data-lucide="award" class="text-tr-400 w-8 h-8"></i> Conclusión Ejecutiva
+                    </h2>
+                    
+                    <div class="space-y-6 text-tr-50 text-lg leading-relaxed relative z-10 font-light">
+                        <p>
+                            La propuesta permite desplegar TÓTAL REPORT® dentro del ambiente tecnológico de Finandina, preservando la propiedad y custodia de los datos, evitando duplicidad innecesaria de bodegas y habilitando una capa regulatoria especializada basada en metodología medallón.
+                        </p>
+                        <p>
+                            Finandina conserva sus fuentes, infraestructura, seguridad y evidencia. TÓTAL REPORT® aporta el motor regulatorio, reglas, cálculos, validaciones, formatos, analítica, transmisión y actualización normativa.
+                        </p>
+                        <p class="font-medium text-white p-6 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20 shadow-inner">
+                            El alcance inicial recomendado se enfoca en la dimensión de riesgo, priorizando Circular 003 / Grandes Exposiciones, formatos 450 y 458, y MURIC desde validación, calidad, analítica y trazabilidad.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        
+        // Expose global variables for Zoom & Copy logic before rendering
+        window.mermaidZoomState = new Map();
+        
+        window.handleZoom = (btn, delta, exactScale = null) => {
+            const container = btn.closest('.diagram-container');
+            const wrapper = container.querySelector('.mermaid-scale-wrapper');
+            const id = container.dataset.diagramId || Math.random().toString(36).substring(7);
+            container.dataset.diagramId = id;
+            
+            let scale = window.mermaidZoomState.get(id) || 1;
+            
+            if (exactScale !== null) {
+                scale = exactScale;
+            } else {
+                scale = Math.max(0.25, Math.min(scale + delta, 3)); // between 25% and 300%
+            }
+            
+            window.mermaidZoomState.set(id, scale);
+            wrapper.style.transform = `scale(${scale})`;
+        };
+
+        window.copyMermaid = (btn) => {
+            const container = btn.closest('.diagram-container');
+            const mermaidDiv = container.querySelector('.mermaid');
+            // Get original source stored in data attribute
+            const sourceCode = mermaidDiv.getAttribute('data-source');
+            
+            if (sourceCode) {
+                navigator.clipboard.writeText(sourceCode).then(() => {
+                    const successMsg = container.querySelector('.copy-success');
+                    successMsg.classList.remove('hidden');
+                    setTimeout(() => successMsg.classList.add('hidden'), 2000);
+                }).catch(err => {
+                    console.error("No se pudo copiar el texto: ", err);
+                });
+            }
+        };
+
+        // Wait for DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            mermaid.initialize({ 
+                startOnLoad: true, 
+                theme: 'base',
+                themeVariables: {
+                    fontFamily: 'Inter, sans-serif',
+                    primaryColor: '#eff6ff',
+                    primaryTextColor: '#1e3a8a',
+                    primaryBorderColor: '#3b82f6',
+                    lineColor: '#64748b',
+                    secondaryColor: '#f1f5f9',
+                    tertiaryColor: '#fff'
+                },
+                flowchart: { curve: 'basis' },
+                securityLevel: 'loose' 
+            });
+        });
+    </script>
+    <script>
+        // Controles de seguridad básicos solicitados
+        document.addEventListener('contextmenu', e => {
+            // Permitir en elementos interactivos (botones/enlaces)
+            if(e.target.closest('button, a')) return;
+            e.preventDefault(); 
+        });
+        document.addEventListener('copy', e => {
+            // No bloquear la copia del botón mermaid explícito
+            if(document.activeElement && document.activeElement.tagName === 'BUTTON') return;
+            e.preventDefault();
+        }); 
+        document.addEventListener('selectstart', e => {
+            if(e.target.closest('button, a')) return;
+            e.preventDefault();
+        });
+
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Mobile Sidebar Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        if(mobileBtn) mobileBtn.addEventListener('click', toggleSidebar);
+        if(overlay) overlay.addEventListener('click', toggleSidebar);
+
+        // Active State & Smooth Scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('#sidebar nav a');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (window.innerWidth < 768) toggleSidebar();
+                
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Simple scroll spy
+        const mainContent = document.querySelector('main');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (mainContent.scrollTop >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('bg-fin-50', 'text-fin-600', 'font-bold');
+                link.classList.add('text-slate-600');
+                if (link.getAttribute('href').substring(1) === current && current !== 'conclusion') {
+                    link.classList.remove('text-slate-600');
+                    link.classList.add('bg-fin-50', 'text-fin-600', 'font-bold');
+                } else if (link.getAttribute('href').substring(1) === current && current === 'conclusion') {
+                     // Keep the conclusion button styled uniquely if it is active
+                     link.classList.remove('bg-tr-50', 'text-tr-700');
+                     link.classList.add('bg-tr-100', 'text-tr-800', 'font-bold');
+                } else if (link.getAttribute('href').substring(1) === 'conclusion') {
+                     // Reset conclusion
+                     link.classList.remove('bg-tr-100', 'text-tr-800', 'font-bold');
+                     link.classList.add('bg-tr-50', 'text-tr-700');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
