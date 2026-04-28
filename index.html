@@ -89,8 +89,6 @@
         }
 
         .mermaid-scale-wrapper {
-            transform-origin: top left;
-            transition: transform 0.2s ease-out;
             padding: 1.5rem;
             min-width: 100%;
             display: inline-block;
@@ -373,15 +371,11 @@
                             <p class="text-sm text-slate-500">Muestra la separación de responsabilidades y flujo conceptual de la información.</p>
                         </div>
                         <div class="flex flex-wrap gap-2 opacity-100 transition-opacity">
-                            <div class="bg-slate-100 p-1 rounded flex gap-1 items-center">
-                                <button class="p-1 hover:bg-white rounded text-slate-600 tooltip" title="Alejar" onclick="handleZoom(this, -0.25)"><i data-lucide="zoom-out" class="w-4 h-4"></i></button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 0.75)">75%</button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600 font-bold" onclick="handleZoom(this, 0, 1)">100%</button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 1.25)">125%</button>
-                                <button class="p-1 hover:bg-white rounded text-slate-600 tooltip" title="Acercar" onclick="handleZoom(this, 0.25)"><i data-lucide="zoom-in" class="w-4 h-4"></i></button>
-                            </div>
-                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
-                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Mermaid
+                            <button class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg text-sm font-semibold flex items-center gap-2 border border-slate-200 transition-colors" onclick="openModal(this)">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i> Ampliar
+                            </button>
+                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded-lg text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
+                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Diagrama
                             </button>
                             <span class="text-emerald-600 text-sm font-medium self-center hidden copy-success">¡Copiado!</span>
                         </div>
@@ -460,15 +454,11 @@
                             <p class="text-sm text-slate-500">Mapeo conceptual de zonas, responsabilidades y componentes principales.</p>
                         </div>
                         <div class="flex flex-wrap gap-2 opacity-100 transition-opacity">
-                            <div class="bg-slate-100 p-1 rounded flex gap-1 items-center">
-                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, -0.25)"><i data-lucide="zoom-out" class="w-4 h-4"></i></button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 0.75)">75%</button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600 font-bold" onclick="handleZoom(this, 0, 1)">100%</button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 1.25)">125%</button>
-                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, 0.25)"><i data-lucide="zoom-in" class="w-4 h-4"></i></button>
-                            </div>
-                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
-                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Mermaid
+                            <button class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg text-sm font-semibold flex items-center gap-2 border border-slate-200 transition-colors" onclick="openModal(this)">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i> Ampliar
+                            </button>
+                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded-lg text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
+                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Diagrama
                             </button>
                             <span class="text-emerald-600 text-sm font-medium self-center hidden copy-success">¡Copiado!</span>
                         </div>
@@ -601,9 +591,26 @@
                 
                 <p class="text-slate-600 mb-6">Aislamiento progresivo de datos para garantizar inmutabilidad, trazabilidad y calidad antes de la validación normativa.</p>
 
-                <div class="mermaid-wrapper">
-                    <div class="absolute top-4 right-4 text-xs font-mono text-slate-400 z-10 bg-white/80 px-2 rounded">Flujo Medallón S3</div>
-                    <div class="mermaid" data-source="flowchart LR
+                <div class="diagram-container group">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4 pointer-events-auto">
+                        <div>
+                            <h3 class="font-bold text-slate-800">Flujo Conceptual Framework Medallón</h3>
+                            <p class="text-sm text-slate-500">Aislamiento progresivo y aseguramiento de calidad de datos en S3.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 opacity-100 transition-opacity">
+                            <button class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg text-sm font-semibold flex items-center gap-2 border border-slate-200 transition-colors" onclick="openModal(this)">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i> Ampliar
+                            </button>
+                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded-lg text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
+                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Diagrama
+                            </button>
+                            <span class="text-emerald-600 text-sm font-medium self-center hidden copy-success">¡Copiado!</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mermaid-viewport">
+                        <div class="mermaid-scale-wrapper">
+                            <div class="mermaid" data-source="flowchart LR
     classDef fin fill:#f1f5f9,stroke:#94a3b8,stroke-width:1.5px,color:#334155
     classDef raw fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#475569
     classDef bronze fill:#fff7ed,stroke:#fdba74,stroke-width:2px,color:#9a3412
@@ -640,43 +647,45 @@
     CAT -. &#34;Gobierna&#34; .- GLD
     
     style LAKES fill:#ffffff,stroke:#3b82f6,stroke-width:2px,rx:10,ry:10">
-                        flowchart LR
-                            classDef fin fill:#f1f5f9,stroke:#94a3b8,stroke-width:1.5px,color:#334155
-                            classDef raw fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#475569
-                            classDef bronze fill:#fff7ed,stroke:#fdba74,stroke-width:2px,color:#9a3412
-                            classDef silver fill:#f1f5f9,stroke:#cbd5e1,stroke-width:2px,color:#334155
-                            classDef gold fill:#fefce8,stroke:#facc15,stroke-width:2px,color:#854d0e
-                            classDef tr fill:#faf5ff,stroke:#c084fc,stroke-width:2px,color:#581c87
-                            classDef evid fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#92400e
-                            classDef catalog fill:#ecfdf5,stroke:#10b981,stroke-width:1.5px,color:#064e3b,stroke-dasharray: 5 5
+                                flowchart LR
+                                    classDef fin fill:#f1f5f9,stroke:#94a3b8,stroke-width:1.5px,color:#334155
+                                    classDef raw fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#475569
+                                    classDef bronze fill:#fff7ed,stroke:#fdba74,stroke-width:2px,color:#9a3412
+                                    classDef silver fill:#f1f5f9,stroke:#cbd5e1,stroke-width:2px,color:#334155
+                                    classDef gold fill:#fefce8,stroke:#facc15,stroke-width:2px,color:#854d0e
+                                    classDef tr fill:#faf5ff,stroke:#c084fc,stroke-width:2px,color:#581c87
+                                    classDef evid fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#92400e
+                                    classDef catalog fill:#ecfdf5,stroke:#10b981,stroke-width:1.5px,color:#064e3b,stroke-dasharray: 5 5
 
-                            SRC[("Bodega Corporativa<br/>Finandina")]:::fin
+                                    SRC[("Bodega Corporativa<br/>Finandina")]:::fin
 
-                            subgraph LAKES ["Data Lake Regulatorio (Amazon S3)"]
-                                direction LR
-                                RAW[("Landing / Raw<br/>Ingesta Cruda")]:::raw
-                                BRZ[("Bronze<br/>Normalización")]:::bronze
-                                SLV[("Silver<br/>Calidad y Cruces")]:::silver
-                                GLD[("Gold Regulatoria<br/>Modelo Dimensional")]:::gold
-                            end
+                                    subgraph LAKES ["Data Lake Regulatorio (Amazon S3)"]
+                                        direction LR
+                                        RAW[("Landing / Raw<br/>Ingesta Cruda")]:::raw
+                                        BRZ[("Bronze<br/>Normalización")]:::bronze
+                                        SLV[("Silver<br/>Calidad y Cruces")]:::silver
+                                        GLD[("Gold Regulatoria<br/>Modelo Dimensional")]:::gold
+                                    end
 
-                            TR{{"Motor TÓTAL REPORT®<br/>(Reglas Normativas)"}}:::tr
-                            EVD[("Evidencia<br/>Histórico inmutable")]:::evid
-                            CAT[["Glue Data Catalog<br/>(Metadatos técnicos)"]]:::catalog
+                                    TR{{"Motor TÓTAL REPORT®<br/>(Reglas Normativas)"}}:::tr
+                                    EVD[("Evidencia<br/>Histórico inmutable")]:::evid
+                                    CAT[["Glue Data Catalog<br/>(Metadatos técnicos)"]]:::catalog
 
-                            SRC -- "Extracción" --> RAW
-                            RAW -- "Tipado/Limpieza" --> BRZ
-                            BRZ -- "Reglas DQ" --> SLV
-                            SLV -- "Preparación" --> GLD
-                            GLD -- "Consumo" --> TR
-                            TR -- "Resultados/Logs" --> EVD
+                                    SRC -- "Extracción" --> RAW
+                                    RAW -- "Tipado/Limpieza" --> BRZ
+                                    BRZ -- "Reglas DQ" --> SLV
+                                    SLV -- "Preparación" --> GLD
+                                    GLD -- "Consumo" --> TR
+                                    TR -- "Resultados/Logs" --> EVD
 
-                            CAT -. "Gobierna" .- RAW
-                            CAT -. "Gobierna" .- BRZ
-                            CAT -. "Gobierna" .- SLV
-                            CAT -. "Gobierna" .- GLD
-                            
-                            style LAKES fill:#ffffff,stroke:#3b82f6,stroke-width:2px,rx:10,ry:10
+                                    CAT -. "Gobierna" .- RAW
+                                    CAT -. "Gobierna" .- BRZ
+                                    CAT -. "Gobierna" .- SLV
+                                    CAT -. "Gobierna" .- GLD
+                                    
+                                    style LAKES fill:#ffffff,stroke:#3b82f6,stroke-width:2px,rx:10,ry:10
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -703,7 +712,7 @@
                                 <tr class="hover:bg-slate-50">
                                     <td class="px-6 py-4 font-bold text-amber-700 whitespace-nowrap"><div class="w-3 h-3 rounded-full bg-amber-600 inline-block mr-2"></div> Bronze</td>
                                     <td class="px-6 py-4 text-slate-600">Normalización técnica base.</td>
-                                    <td class="px-6 py-4 text-slate-600">Tipos de dato, estructuras base, nombres estandarizados, formatos de fecha.</td>
+                                    <td class="px-6 py-4 text-slate-600">Tipos de dato, structures base, nombres estandarizados, formatos de fecha.</td>
                                     <td class="px-6 py-4"><span class="badge badge-fin">Finandina / Compartido</span></td>
                                     <td class="px-6 py-4 text-slate-600">Dataset normalizado, logs de normalización.</td>
                                 </tr>
@@ -756,15 +765,11 @@
                             <p class="text-sm text-slate-500">Recorrido del dato desde la fuente hasta la transmisión y evidencia.</p>
                         </div>
                         <div class="flex flex-wrap gap-2 opacity-100 transition-opacity">
-                            <div class="bg-slate-100 p-1 rounded flex gap-1 items-center">
-                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, -0.25)"><i data-lucide="zoom-out" class="w-4 h-4"></i></button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 0.75)">75%</button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600 font-bold" onclick="handleZoom(this, 0, 1)">100%</button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 1.25)">125%</button>
-                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, 0.25)"><i data-lucide="zoom-in" class="w-4 h-4"></i></button>
-                            </div>
-                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
-                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Mermaid
+                            <button class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg text-sm font-semibold flex items-center gap-2 border border-slate-200 transition-colors" onclick="openModal(this)">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i> Ampliar
+                            </button>
+                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded-lg text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
+                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Diagrama
                             </button>
                             <span class="text-emerald-600 text-sm font-medium self-center hidden copy-success">¡Copiado!</span>
                         </div>
@@ -843,15 +848,11 @@
                             <p class="text-sm text-slate-500">Interacción entre sistemas y manejo de escenarios (Alt/Else).</p>
                         </div>
                         <div class="flex flex-wrap gap-2 opacity-100 transition-opacity">
-                            <div class="bg-slate-100 p-1 rounded flex gap-1 items-center">
-                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, -0.25)"><i data-lucide="zoom-out" class="w-4 h-4"></i></button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 0.75)">75%</button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600 font-bold" onclick="handleZoom(this, 0, 1)">100%</button>
-                                <button class="px-2 py-1 hover:bg-white rounded text-xs font-mono text-slate-600" onclick="handleZoom(this, 0, 1.25)">125%</button>
-                                <button class="p-1 hover:bg-white rounded text-slate-600" onclick="handleZoom(this, 0.25)"><i data-lucide="zoom-in" class="w-4 h-4"></i></button>
-                            </div>
-                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
-                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Mermaid
+                            <button class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg text-sm font-semibold flex items-center gap-2 border border-slate-200 transition-colors" onclick="openModal(this)">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i> Ampliar
+                            </button>
+                            <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded-lg text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaid(this)">
+                                <i data-lucide="copy" class="w-4 h-4"></i> Copiar Diagrama
                             </button>
                             <span class="text-emerald-600 text-sm font-medium self-center hidden copy-success">¡Copiado!</span>
                         </div>
@@ -1976,12 +1977,12 @@
             <section id="correo" class="scroll-mt-8">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl"><i data-lucide="mail" class="w-6 h-6"></i></div>
-                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">24. Borrador de Correo de Solicitud</h2>
+                    <h2 class="text-3xl font-bold text-slate-800 tracking-tight">24. Contexto de la Solicitud y Enfoque de Solución</h2>
                 </div>
 
                 <details class="bg-white rounded-2xl border border-slate-200 shadow-sm group">
                     <summary class="px-6 py-4 font-bold text-slate-800 cursor-pointer flex justify-between items-center hover:bg-slate-50 transition-colors rounded-2xl group-open:rounded-b-none group-open:border-b border-slate-200">
-                        <span class="flex items-center gap-2"><i data-lucide="send" class="w-5 h-5 text-fin-500"></i> Desplegar Resumen Ejecutivo </span>
+                        <span class="flex items-center gap-2"><i data-lucide="send" class="w-5 h-5 text-fin-500"></i> Desplegar Contexto y Alcance del Modelo </span>
                         <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform"></i>
                     </summary>
                     <div class="p-6 text-sm text-slate-700 space-y-4 font-mono bg-slate-50 rounded-b-2xl">
@@ -1995,7 +1996,7 @@
                             <li>La custodia de la información transmitida y de los soportes históricos.</li>
                             <li>Las responsabilidades de Finandina, TÓTAL REPORT® y terceros tecnológicos, si aplica.</li>
                         </ol>
-                        <p>Para avanzar con una propuesta precisa, agradecemos nos puedan compartir y/o confirmar los siguientes insumos:</p>
+                        <p>Si se requiere mayor precisión para alinear el prcoceso, debería poderse compartir y/o confirmar los siguientes insumos:</p>
                         <ul class="list-disc pl-6 space-y-1 my-2">
                             <li>Inventario de formatos regulatorios asociados a la dimensión de riesgo.</li>
                             <li>Priorización de los procesos o reportes que hoy generan mayor carga operativa o riesgo.</li>
@@ -2007,7 +2008,7 @@
                             <li>Repositorio donde deberían quedar los archivos transmitidos, acuses, logs y evidencias regulatorias.</li>
                             <li>Lineamientos técnicos para despliegue o integración en AWS de Finandina.</li>
                         </ul>
-                        <p>Con estos insumos se pude cotejar el pipeline remitido y ajustar cualquiera de estos puntos si aplicase:</p>
+                        <p>Con estos insumos se pude cotejar el pipeline remitido y ajustar cualquiera de estos puntos si aplicasen:</p>
                         <ul class="list-disc pl-6 space-y-1 my-2">
                             <li>Modelo conceptual de arquitectura.</li>
                             <li>Flujo de datos regulatorio.</li>
@@ -2018,9 +2019,9 @@
                         </ul>
                         <p class="pt-4 border-t border-slate-200 mt-4 text-slate-500">
                             Cordialmente,<br><br>
-                            <strong>Andrey Ramirez Ospina</strong><br>
+                            <strong>Andrey Ramirez Ospina<br>
                             Gerencia de Desarrollo y Tecnología<br>
-                            TÓTAL REPORT®
+                            TÓTAL REPORT®</strong>
                         </p>
                     </div>
                 </details>
@@ -2058,8 +2059,8 @@
 
             <!-- 26. Conclusión Ejecutiva -->
             <section id="conclusion" class="scroll-mt-8 pb-10">
-                <div class="bg-tr-900 rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden text-white pointer-events-auto">
-                    <div class="absolute -right-20 -top-20 opacity-10">
+                <div class="bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.18),transparent_32%),linear-gradient(120deg,#050b1a_0%,#101b45_45%,#3b0f67_100%)] rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden text-white pointer-events-auto">
+                    <div class="absolute -right-20 -top-20 opacity-5">
                         <i data-lucide="award" class="w-96 h-96"></i>
                     </div>
                     
@@ -2074,7 +2075,7 @@
                         <p>
                             Finandina conserva sus fuentes, infraestructura, seguridad y evidencia. TÓTAL REPORT® aporta el motor regulatorio, reglas, cálculos, validaciones, formatos, analítica, transmisión y actualización normativa.
                         </p>
-                        <p class="font-medium text-white p-6 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20 shadow-inner">
+                        <p class="font-medium text-white p-6 rounded-xl backdrop-blur-sm shadow-inner border" style="background-color: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15);">
                             El alcance inicial recomendado se enfoca en la dimensión de riesgo, priorizando Circular 003 / Grandes Exposiciones, formatos 450 y 458, y MURIC desde validación, calidad, analítica y trazabilidad.
                         </p>
                     </div>
@@ -2084,35 +2085,113 @@
         </div>
     </main>
 
+    <!-- Modal de Ampliación de Diagrama -->
+    <div id="diagram-modal" class="fixed inset-0 z-[100] hidden bg-slate-900/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 opacity-0 transition-opacity duration-300 pointer-events-auto">
+        <div class="bg-white rounded-2xl w-full max-w-7xl max-h-full flex flex-col shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="diagram-modal-content">
+            <div class="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50 shrink-0">
+                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2" id="modal-title">
+                    <i data-lucide="maximize" class="w-5 h-5 text-fin-600"></i> Vista Ampliada
+                </h3>
+                <div class="flex items-center gap-2">
+                    <button class="px-3 py-1.5 bg-fin-50 text-fin-700 hover:bg-fin-100 rounded-lg text-sm font-semibold flex items-center gap-2 border border-fin-200 transition-colors" onclick="copyMermaidFromModal()">
+                        <i data-lucide="copy" class="w-4 h-4"></i> Copiar Diagrama
+                    </button>
+                    <span id="modal-copy-success" class="text-emerald-600 text-sm font-medium hidden">¡Copiado!</span>
+                    <button onclick="closeModal()" class="p-2 text-slate-500 hover:bg-slate-200 hover:text-slate-800 rounded-lg transition-colors ml-2" title="Cerrar">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 overflow-auto bg-slate-50 relative flex items-center justify-center p-8" id="modal-scroll-container">
+                <div class="absolute top-4 right-4 bg-white border border-slate-200 p-1 rounded-lg flex gap-1 shadow-sm z-10">
+                     <button class="p-1.5 hover:bg-slate-100 rounded text-slate-600" onclick="handleModalZoom(-0.25)" title="Alejar"><i data-lucide="zoom-out" class="w-4 h-4"></i></button>
+                     <button class="px-2 py-1 hover:bg-slate-100 rounded text-xs font-mono text-slate-600 font-bold" onclick="handleModalZoom(0, 1)">100%</button>
+                     <button class="p-1.5 hover:bg-slate-100 rounded text-slate-600" onclick="handleModalZoom(0.25)" title="Acercar"><i data-lucide="zoom-in" class="w-4 h-4"></i></button>
+                </div>
+                <div id="modal-diagram-container" class="transition-transform duration-200 origin-center flex items-center justify-center min-w-full min-h-full">
+                    <!-- SVG injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         
-        // Expose global variables for Zoom & Copy logic before rendering
-        window.mermaidZoomState = new Map();
-        
-        window.handleZoom = (btn, delta, exactScale = null) => {
+        // Modal Logic
+        window.currentModalSource = '';
+        window.modalZoomLevel = 1;
+
+        window.openModal = (btn) => {
             const container = btn.closest('.diagram-container');
-            const wrapper = container.querySelector('.mermaid-scale-wrapper');
-            const id = container.dataset.diagramId || Math.random().toString(36).substring(7);
-            container.dataset.diagramId = id;
+            const titleElem = container.querySelector('h3');
+            const mermaidDiv = container.querySelector('.mermaid');
             
-            let scale = window.mermaidZoomState.get(id) || 1;
+            if (!mermaidDiv) return;
+
+            document.getElementById('modal-title').innerHTML = `<i data-lucide="maximize" class="w-5 h-5 text-fin-600"></i> ${titleElem ? titleElem.innerText : 'Vista Ampliada'}`;
             
+            window.currentModalSource = mermaidDiv.getAttribute('data-source');
+            const svgContent = mermaidDiv.innerHTML;
+            
+            const modalContainer = document.getElementById('modal-diagram-container');
+            modalContainer.innerHTML = svgContent;
+            
+            window.modalZoomLevel = 1;
+            modalContainer.style.transform = `scale(1)`;
+            
+            const modal = document.getElementById('diagram-modal');
+            const modalContent = document.getElementById('diagram-modal-content');
+            modal.classList.remove('hidden');
+            
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                if (window.lucide) window.lucide.createIcons();
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeModal = () => {
+            const modal = document.getElementById('diagram-modal');
+            const modalContent = document.getElementById('diagram-modal-content');
+            
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.getElementById('modal-diagram-container').innerHTML = ''; 
+                document.body.style.overflow = '';
+            }, 300);
+        };
+
+        window.handleModalZoom = (delta, exactScale = null) => {
             if (exactScale !== null) {
-                scale = exactScale;
+                window.modalZoomLevel = exactScale;
             } else {
-                scale = Math.max(0.25, Math.min(scale + delta, 3)); // between 25% and 300%
+                window.modalZoomLevel = Math.max(0.25, Math.min(window.modalZoomLevel + delta, 4));
             }
-            
-            window.mermaidZoomState.set(id, scale);
-            wrapper.style.transform = `scale(${scale})`;
+            document.getElementById('modal-diagram-container').style.transform = `scale(${window.modalZoomLevel})`;
+        };
+
+        window.copyMermaidFromModal = () => {
+            if (window.currentModalSource) {
+                navigator.clipboard.writeText(window.currentModalSource).then(() => {
+                    const successMsg = document.getElementById('modal-copy-success');
+                    successMsg.classList.remove('hidden');
+                    setTimeout(() => successMsg.classList.add('hidden'), 2000);
+                }).catch(err => {
+                    console.error("No se pudo copiar el texto: ", err);
+                });
+            }
         };
 
         window.copyMermaid = (btn) => {
             const container = btn.closest('.diagram-container');
             const mermaidDiv = container.querySelector('.mermaid');
-            // Get original source stored in data attribute
             const sourceCode = mermaidDiv.getAttribute('data-source');
             
             if (sourceCode) {
@@ -2149,7 +2228,7 @@
         // Controles de seguridad básicos solicitados
         document.addEventListener('contextmenu', e => {
             // Permitir en elementos interactivos (botones/enlaces)
-            if(e.target.closest('button, a')) return;
+            if(e.target.closest('button, a, .diagram-container, #diagram-modal')) return;
             e.preventDefault(); 
         });
         document.addEventListener('copy', e => {
