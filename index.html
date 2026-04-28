@@ -105,8 +105,11 @@
     <!-- Mobile Header -->
     <div class="md:hidden fixed top-0 w-full bg-white border-b border-slate-200 z-50 flex items-center justify-between px-4 py-3 shadow-sm">
         <div class="font-bold text-fin-900 text-lg flex items-center gap-2">
-            <i data-lucide="shield-check" class="w-6 h-6 text-tr-600"></i>
-            TÓTAL REPORT®
+            <img 
+                src="https://totalreport.com.co/wp-content/uploads/2024/11/NB-0023t.jpg" 
+                alt="TÓTAL REPORT®" 
+                class="w-[72px] h-[52px] object-contain block"
+            >
         </div>
         <button id="mobile-menu-btn" class="text-slate-500 hover:text-slate-700 focus:outline-none">
             <i data-lucide="menu" class="w-6 h-6"></i>
@@ -115,42 +118,78 @@
 
     <!-- Sidebar -->
     <aside id="sidebar" class="w-72 bg-white border-r border-slate-200 h-full flex-shrink-0 flex flex-col transition-transform transform -translate-x-full md:translate-x-0 fixed md:static z-40 shadow-lg md:shadow-none">
-        <div class="h-16 flex items-center px-6 border-b border-slate-200 font-bold text-fin-900 text-lg md:flex hidden">
-            <i data-lucide="shield-check" class="w-6 h-6 mr-3 text-tr-600"></i>
-            TÓTAL REPORT®
+        <!-- Logo Institucional -->
+        <div class="h-24 flex items-center justify-center border-b border-slate-200 px-6 py-4 md:flex hidden bg-white w-full">
+            <img 
+                src="https://totalreport.com.co/wp-content/uploads/2024/11/NB-0023t.jpg" 
+                alt="TÓTAL REPORT®" 
+                class="w-[96px] h-[72px] object-contain block mx-auto"
+            >
         </div>
         
-        <div class="p-4 text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border-b border-slate-100">
-            Banco Finandina
+        <div class="p-3 text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border-b border-slate-100 text-center">
+            Proyecto Banco Finandina
         </div>
 
-        <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto text-sm font-medium">
-            <a href="#contexto" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="book-open" class="w-4 h-4 mr-3 text-slate-400"></i> Contexto y Objetivos</a>
-            <a href="#principios" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="compass" class="w-4 h-4 mr-3 text-slate-400"></i> Principios de Diseño</a>
-            <a href="#leyenda" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="palette" class="w-4 h-4 mr-3 text-slate-400"></i> Leyenda Visual</a>
-            <a href="#modelo" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="network" class="w-4 h-4 mr-3 text-slate-400"></i> Modelo Conceptual</a>
-            <a href="#despliegue" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="cloud" class="w-4 h-4 mr-3 text-tr-500"></i> Arquitectura de Despliegue</a>
-            <a href="#medallon" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="layers" class="w-4 h-4 mr-3 text-proc-600"></i> Metodología Medallón</a>
-            <a href="#flujo" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="git-branch" class="w-4 h-4 mr-3 text-slate-400"></i> Flujo de Datos Regulatorio</a>
-            <a href="#secuencia" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="arrow-right-left" class="w-4 h-4 mr-3 text-slate-400"></i> Secuencia Operativa</a>
-            <a href="#gobierno" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="gavel" class="w-4 h-4 mr-3 text-slate-400"></i> Gobierno Regulatorio</a>
-            <a href="#linaje" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="git-commit" class="w-4 h-4 mr-3 text-evid-600"></i> Linaje y Evidencia</a>
-            <a href="#artefactos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="boxes" class="w-4 h-4 mr-3 text-slate-400"></i> Artefactos Cliente vs Producto</a>
-            <a href="#finandina-vs-tr" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="split-square-horizontal" class="w-4 h-4 mr-3 text-slate-400"></i> Finandina vs TÓTAL REPORT®</a>
-            <a href="#seguridad" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="shield" class="w-4 h-4 mr-3 text-sec-600"></i> Seguridad y Ambientes</a>
-            <a href="#validaciones" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="check-square" class="w-4 h-4 mr-3 text-slate-400"></i> Validaciones</a>
-            <a href="#muric" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="briefcase" class="w-4 h-4 mr-3 text-slate-400"></i> Consideraciones MURIC</a>
-            <a href="#raci" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="users" class="w-4 h-4 mr-3 text-slate-400"></i> Matriz RACI</a>
-            <a href="#insumos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="list-checks" class="w-4 h-4 mr-3 text-slate-400"></i> Insumos Requeridos</a>
-            <a href="#supuestos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="alert-circle" class="w-4 h-4 mr-3 text-slate-400"></i> Supuestos y Restricciones</a>
-            <a href="#riesgos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="alert-triangle" class="w-4 h-4 mr-3 text-ext-600"></i> Riesgos y Mitigaciones</a>
-            <a href="#criterios" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="award" class="w-4 h-4 mr-3 text-slate-400"></i> Criterios de Éxito</a>
-            <a href="#dimensionamiento" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="maximize" class="w-4 h-4 mr-3 text-slate-400"></i> Dimensionamiento Fase 1</a>
-            <a href="#componentes" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="server" class="w-4 h-4 mr-3 text-slate-400"></i> Componentes AWS</a>
-            <a href="#proximos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="calendar" class="w-4 h-4 mr-3 text-slate-400"></i> Próximos Pasos</a>
-            <a href="#correo" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="mail" class="w-4 h-4 mr-3 text-slate-400"></i> Correo a Finandina</a>
-            <a href="#glosario" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="book" class="w-4 h-4 mr-3 text-slate-400"></i> Glosario</a>
-            <a href="#conclusion" class="flex items-center px-3 py-2 text-tr-700 bg-tr-50 rounded-lg hover:bg-tr-100 transition-colors mt-2"><i data-lucide="shield-check" class="w-4 h-4 mr-3 text-tr-600"></i> Conclusión Ejecutiva</a>
+        <nav class="flex-1 px-3 py-4 space-y-6 overflow-y-auto text-sm font-medium">
+            
+            <!-- Grupo 1: Visión General -->
+            <div>
+                <h3 class="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Visión General</h3>
+                <div class="space-y-1">
+                    <a href="#contexto" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="book-open" class="w-4 h-4 mr-3 text-slate-400"></i> Contexto y Objetivos</a>
+                    <a href="#principios" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="compass" class="w-4 h-4 mr-3 text-slate-400"></i> Principios de Diseño</a>
+                    <a href="#leyenda" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="palette" class="w-4 h-4 mr-3 text-slate-400"></i> Leyenda Visual</a>
+                </div>
+            </div>
+
+            <!-- Grupo 2: Arquitectura y Datos -->
+            <div>
+                <h3 class="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Arquitectura y Datos</h3>
+                <div class="space-y-1">
+                    <a href="#modelo" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="network" class="w-4 h-4 mr-3 text-slate-400"></i> Modelo Conceptual</a>
+                    <a href="#despliegue" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="cloud" class="w-4 h-4 mr-3 text-tr-500"></i> Arq. de Despliegue AWS</a>
+                    <a href="#medallon" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="layers" class="w-4 h-4 mr-3 text-proc-600"></i> Metodología Medallón</a>
+                    <a href="#flujo" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="git-branch" class="w-4 h-4 mr-3 text-slate-400"></i> Flujo de Datos Regulatorio</a>
+                    <a href="#secuencia" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="arrow-right-left" class="w-4 h-4 mr-3 text-slate-400"></i> Secuencia Operativa</a>
+                </div>
+            </div>
+
+            <!-- Grupo 3: Operación y Seguridad -->
+            <div>
+                <h3 class="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Operación y Gobierno</h3>
+                <div class="space-y-1">
+                    <a href="#gobierno" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="gavel" class="w-4 h-4 mr-3 text-slate-400"></i> Gobierno Regulatorio</a>
+                    <a href="#linaje" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="git-commit" class="w-4 h-4 mr-3 text-evid-600"></i> Linaje y Evidencia</a>
+                    <a href="#artefactos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="boxes" class="w-4 h-4 mr-3 text-slate-400"></i> Artefactos Cliente vs Prod.</a>
+                    <a href="#finandina-vs-tr" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="split-square-horizontal" class="w-4 h-4 mr-3 text-slate-400"></i> Finandina vs TÓTAL R.</a>
+                    <a href="#seguridad" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="shield" class="w-4 h-4 mr-3 text-sec-600"></i> Seguridad y Ambientes</a>
+                    <a href="#validaciones" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="check-square" class="w-4 h-4 mr-3 text-slate-400"></i> Validaciones</a>
+                    <a href="#muric" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="briefcase" class="w-4 h-4 mr-3 text-slate-400"></i> Consideraciones MURIC</a>
+                </div>
+            </div>
+
+            <!-- Grupo 4: Gestión de Proyecto -->
+            <div>
+                <h3 class="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Gestión de Proyecto</h3>
+                <div class="space-y-1">
+                    <a href="#raci" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="users" class="w-4 h-4 mr-3 text-slate-400"></i> Matriz RACI</a>
+                    <a href="#insumos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="list-checks" class="w-4 h-4 mr-3 text-slate-400"></i> Insumos Requeridos</a>
+                    <a href="#supuestos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="alert-circle" class="w-4 h-4 mr-3 text-slate-400"></i> Supuestos y Restricciones</a>
+                    <a href="#riesgos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="alert-triangle" class="w-4 h-4 mr-3 text-ext-600"></i> Riesgos y Mitigaciones</a>
+                    <a href="#criterios" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="award" class="w-4 h-4 mr-3 text-slate-400"></i> Criterios de Éxito</a>
+                    <a href="#dimensionamiento" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="maximize" class="w-4 h-4 mr-3 text-slate-400"></i> Dimensionamiento Fase 1</a>
+                    <a href="#componentes" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="server" class="w-4 h-4 mr-3 text-slate-400"></i> Componentes AWS</a>
+                    <a href="#proximos" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="calendar" class="w-4 h-4 mr-3 text-slate-400"></i> Próximos Pasos</a>
+                    <a href="#correo" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="mail" class="w-4 h-4 mr-3 text-slate-400"></i> Correo a Finandina</a>
+                    <a href="#glosario" class="flex items-center px-3 py-2 text-slate-600 rounded-lg hover:bg-fin-50 hover:text-fin-600 transition-colors"><i data-lucide="book" class="w-4 h-4 mr-3 text-slate-400"></i> Glosario</a>
+                    
+                    <div class="pt-4 mt-2 border-t border-slate-100">
+                        <a href="#conclusion" class="flex items-center px-3 py-2 text-tr-700 bg-tr-50 rounded-lg hover:bg-tr-100 transition-colors shadow-sm border border-tr-100"><i data-lucide="shield-check" class="w-4 h-4 mr-3 text-tr-600"></i> Conclusión Ejecutiva</a>
+                    </div>
+                </div>
+            </div>
+
         </nav>
         
         <div class="p-4 border-t border-slate-200 bg-slate-50 text-xs text-slate-500">
@@ -165,22 +204,46 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-y-auto h-full pt-16 md:pt-0 scroll-smooth pb-24 bg-slate-50 relative">
         
-        <!-- Hero Banner -->
-        <div class="bg-gradient-to-r from-fin-900 to-tr-900 text-white px-8 py-20 text-center relative overflow-hidden shadow-md">
-            <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMiIgZmlsbD0iI2ZmZiI+PC9jaXJjbGU+Cjwvc3ZnPg==')]"></div>
-            <div class="relative z-10 max-w-4xl mx-auto pointer-events-auto">
-                <span class="inline-block py-1 px-3 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-semibold tracking-wider mb-4 border border-white/30">
-                    PROPUESTA DE ARQUITECTURA CLOUD
-                </span>
-                <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight tracking-tight">Gobierno de Datos Regulatorios</h1>
-                <p class="text-blue-100 text-lg md:text-xl font-light">
-                    Modelo Conceptual, Arquitectura de Integración y Despliegue<br class="hidden md:block"/> 
-                    <strong>Banco Finandina & TÓTAL REPORT®</strong>
-                </p>
-            </div>
-        </div>
+        <!-- Hero Banner con Video -->
+        <section class="relative w-full min-h-[460px] overflow-hidden shadow-md flex items-center justify-center text-center bg-slate-900">
 
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
+        <!-- Video Background -->
+        <video
+            id="hero-video"
+            class="absolute inset-0 w-full h-full object-cover z-0"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            poster="https://totalreport.com.co/wp-content/uploads/2024/11/NB-0023t.jpg"
+        >
+            <source src="https://totalreport.com.co/wp-content/uploads/2024/11/sl1.mp4" type="video/mp4">
+            Tu navegador no soporta video HTML5.
+        </video>
+
+        <!-- Overlay para legibilidad, menos oscuro para que el video sí se vea -->
+        <div class="absolute inset-0 z-10 bg-gradient-to-r from-slate-950/75 via-blue-950/55 to-purple-950/55"></div>
+
+        <!-- Content -->
+        <div class="relative z-20 max-w-5xl mx-auto px-8 py-28 pointer-events-auto">
+            <span class="inline-block py-1.5 px-4 rounded-full bg-white/10 backdrop-blur-md text-white text-xs md:text-sm font-semibold tracking-widest mb-6 border border-white/20 shadow-lg">
+                PROPUESTA DE ARQUITECTURA CLOUD
+            </span>
+
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight tracking-tight text-white drop-shadow-md">
+                Gobierno de Datos Regulatorios
+            </h1>
+
+            <p class="text-blue-100 text-lg md:text-2xl font-light drop-shadow">
+                Modelo Conceptual, Arquitectura de Integración y Despliegue<br class="hidden md:block">
+                <strong>Banco Finandina &amp; TÓTAL REPORT®</strong>
+            </p>
+        </div>
+    </section>
+
+        <!-- Contenedor Principal Expandido -->
+        <div class="w-full max-w-[96%] xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
 
             <!-- 1. Contexto -->
             <section id="contexto" class="scroll-mt-8">
@@ -529,6 +592,85 @@
                 </div>
                 
                 <p class="text-slate-600 mb-6">Aislamiento progresivo de datos para garantizar inmutabilidad, trazabilidad y calidad antes de la validación normativa.</p>
+
+                <div class="mermaid-wrapper">
+                    <div class="absolute top-4 right-4 text-xs font-mono text-slate-400 z-10 bg-white/80 px-2 rounded">Flujo Medallón S3</div>
+                    <div class="mermaid" data-source="flowchart LR
+    classDef fin fill:#f1f5f9,stroke:#94a3b8,stroke-width:1.5px,color:#334155
+    classDef raw fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#475569
+    classDef bronze fill:#fff7ed,stroke:#fdba74,stroke-width:2px,color:#9a3412
+    classDef silver fill:#f1f5f9,stroke:#cbd5e1,stroke-width:2px,color:#334155
+    classDef gold fill:#fefce8,stroke:#facc15,stroke-width:2px,color:#854d0e
+    classDef tr fill:#faf5ff,stroke:#c084fc,stroke-width:2px,color:#581c87
+    classDef evid fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#92400e
+    classDef catalog fill:#ecfdf5,stroke:#10b981,stroke-width:1.5px,color:#064e3b,stroke-dasharray: 5 5
+
+    SRC[(&#34;Bodega Corporativa<br/>Finandina&#34;)]:::fin
+
+    subgraph LAKES [&#34;Data Lake Regulatorio (Amazon S3)&#34;]
+        direction LR
+        RAW[(&#34;Landing / Raw<br/>Ingesta Cruda&#34;)]:::raw
+        BRZ[(&#34;Bronze<br/>Normalización&#34;)]:::bronze
+        SLV[(&#34;Silver<br/>Calidad y Cruces&#34;)]:::silver
+        GLD[(&#34;Gold Regulatoria<br/>Modelo Dimensional&#34;)]:::gold
+    end
+
+    TR{{&#34;Motor TÓTAL REPORT®<br/>(Reglas Normativas)&#34;}}:::tr
+    EVD[(&#34;Evidencia<br/>Histórico inmutable&#34;)]:::evid
+    CAT[[&#34;Glue Data Catalog<br/>(Metadatos técnicos)&#34;]]:::catalog
+
+    SRC -- &#34;Extracción&#34; --&gt; RAW
+    RAW -- &#34;Tipado/Limpieza&#34; --&gt; BRZ
+    BRZ -- &#34;Reglas DQ&#34; --&gt; SLV
+    SLV -- &#34;Preparación&#34; --&gt; GLD
+    GLD -- &#34;Consumo&#34; --&gt; TR
+    TR -- &#34;Resultados/Logs&#34; --&gt; EVD
+
+    CAT -. &#34;Gobierna&#34; .- RAW
+    CAT -. &#34;Gobierna&#34; .- BRZ
+    CAT -. &#34;Gobierna&#34; .- SLV
+    CAT -. &#34;Gobierna&#34; .- GLD
+    
+    style LAKES fill:#ffffff,stroke:#3b82f6,stroke-width:2px,rx:10,ry:10">
+                        flowchart LR
+                            classDef fin fill:#f1f5f9,stroke:#94a3b8,stroke-width:1.5px,color:#334155
+                            classDef raw fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#475569
+                            classDef bronze fill:#fff7ed,stroke:#fdba74,stroke-width:2px,color:#9a3412
+                            classDef silver fill:#f1f5f9,stroke:#cbd5e1,stroke-width:2px,color:#334155
+                            classDef gold fill:#fefce8,stroke:#facc15,stroke-width:2px,color:#854d0e
+                            classDef tr fill:#faf5ff,stroke:#c084fc,stroke-width:2px,color:#581c87
+                            classDef evid fill:#fffbeb,stroke:#f59e0b,stroke-width:2px,color:#92400e
+                            classDef catalog fill:#ecfdf5,stroke:#10b981,stroke-width:1.5px,color:#064e3b,stroke-dasharray: 5 5
+
+                            SRC[("Bodega Corporativa<br/>Finandina")]:::fin
+
+                            subgraph LAKES ["Data Lake Regulatorio (Amazon S3)"]
+                                direction LR
+                                RAW[("Landing / Raw<br/>Ingesta Cruda")]:::raw
+                                BRZ[("Bronze<br/>Normalización")]:::bronze
+                                SLV[("Silver<br/>Calidad y Cruces")]:::silver
+                                GLD[("Gold Regulatoria<br/>Modelo Dimensional")]:::gold
+                            end
+
+                            TR{{"Motor TÓTAL REPORT®<br/>(Reglas Normativas)"}}:::tr
+                            EVD[("Evidencia<br/>Histórico inmutable")]:::evid
+                            CAT[["Glue Data Catalog<br/>(Metadatos técnicos)"]]:::catalog
+
+                            SRC -- "Extracción" --> RAW
+                            RAW -- "Tipado/Limpieza" --> BRZ
+                            BRZ -- "Reglas DQ" --> SLV
+                            SLV -- "Preparación" --> GLD
+                            GLD -- "Consumo" --> TR
+                            TR -- "Resultados/Logs" --> EVD
+
+                            CAT -. "Gobierna" .- RAW
+                            CAT -. "Gobierna" .- BRZ
+                            CAT -. "Gobierna" .- SLV
+                            CAT -. "Gobierna" .- GLD
+                            
+                            style LAKES fill:#ffffff,stroke:#3b82f6,stroke-width:2px,rx:10,ry:10
+                    </div>
+                </div>
 
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="overflow-x-auto">
